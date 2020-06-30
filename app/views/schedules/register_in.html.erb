@@ -1,0 +1,51 @@
+<h1 class="department-name">Registro de entradas</h1><br>
+<% if @schedules.count > 0 %>
+
+<table class="table is-fullwidth is-hoverable is-bordered schedule-table small-table">
+  <tr>
+  	<th></th>
+  	<th></th>
+  	<th>Nombre</th>
+  	<th>Fecha</th>
+  	<th>Motivo</th>
+  	<th>Autorizó</th>
+  	<th class="td-center">Entrada</th>
+  </tr>
+  
+  <% @schedules.each do |s| %>
+    <tr>
+      <td class="td-center">
+        <% if s.passed.nil? %>
+          <span class="icon has-text-warning"><i class="fas fa-exclamation"></i></span>
+        <% elsif s.passed %>
+          <span class="icon has-text-success"><i class="fas fa-check"></i></span>
+        <% else %>
+          <span class="icon has-text-danger"><i class="fas fa-times"></i></span>
+        <% end %>
+      </td>
+      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>"></td>
+      <td><%= s.user.fullname %></td>
+      <td>
+      	
+      	<% if s.h1 && s.h2 
+    	  	hours = "Todo el día"
+    	  elsif s.h1 && !s.h2 
+    	  	hours = "De 8:00 a 13:30"
+    	  else
+    	    hours = "De 14:30 a 20:00"
+    	  end	
+        %>
+        <%= hours %>
+      </td>
+      <td><%= s.notes %></td>
+      <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %></td>
+      <td class="td-center"><a href="/registro/entrada/<%= s.id %>" class="button is-success" >Dar Entrada</a></td>
+    </tr>
+  <% end %>
+
+</table>
+<% else %>
+<div class="not-today">
+  No hay entradas pendientes
+</div>
+<% end %>

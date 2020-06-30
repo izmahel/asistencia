@@ -1,0 +1,26 @@
+html#login-html {
+  
+}
+
+#login-box {
+  margin: 0 auto;
+  margin-top: 100px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 400px;
+  padding: 2em;
+  text-align: center;
+  .logo {
+    img {
+      width: 150px;
+    }
+  }
+  h1 {
+    font-size: 2em;
+    font-weight: bold;
+  }
+  .button {
+    margin-top: 2em;
+  }
+}

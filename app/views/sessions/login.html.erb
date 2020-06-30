@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html class='has-navbar-fixed-top' id="login-html">
+  <head>
+    <title>Asistencia CIMAV</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+  	<div id="login-box">
+  	  <div class="logo"><%= image_tag 'logo-color.svg' %></div>
+  	  <h1>Asistencia</h1>
+      <a href="/auth/google_oauth2"class="button is-link">Entrar</a>
+  	</div>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </body>
+</html>

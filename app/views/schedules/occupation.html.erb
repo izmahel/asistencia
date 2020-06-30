@@ -1,0 +1,84 @@
+<h1 class="department-name">Ocupación actual</h1>
+<h2 class="schedule-date">
+  <%= l @date.to_date, format: "%A %d de %B de %Y" %>
+</h2>
+<% if @schedules.count > 0 %>
+<div class="columns">
+<div class="column is-three-quarters">
+<table class="table is-fullwidth is-hoverable is-bordered schedule-table small-table">
+  <tr>
+  	<th></th>
+  	<th></th>
+  	<th>Nombre</th>
+  	<th>Fecha</th>
+  	<th>Motivo</th>
+  	<th>Autorizó</th>
+  	<th class="td-center"><span title="Temperatura">Temp.</span></th>
+  	<th class="td-center">Entrada</th>
+  </tr>
+  <% by_department = {} %>
+  <% total = 0 %>
+  <% @schedules.each do |s| %>
+    <% total = total + 1 %>
+    <% if by_department[s.user.department.name] 
+    	 by_department[s.user.department_id] += 1
+       else 
+       	 by_department[s.user.department_id] = 1
+       end
+    %>
+    <tr>
+      <td class="td-center">
+      	<% if s.passed.nil? %>
+  	      <span class="icon has-text-warning"><i class="fas fa-exclamation"></i></span>
+        <% elsif s.passed %>
+          <span class="icon has-text-success"><i class="fas fa-check"></i></span>
+        <% else %>
+          <span class="icon has-text-danger"><i class="fas fa-times"></i></span>
+        <% end %>
+      </td>
+      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>"></td>
+      <td><%= s.user.fullname %></td>
+      <td>
+      	
+      	<% if s.h1 && s.h2 
+    	  	hours = "Todo el día"
+    	  elsif s.h1 && !s.h2 
+    	  	hours = "De 8:00 a 13:30"
+    	  else
+    	    hours = "De 14:30 a 20:00"
+    	  end	
+        %>
+        <%= hours %>
+      </td>
+      <td><%= s.notes %></td>
+      <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %><br><%= s.user.department.name %></td>
+      <td class="td-center"><%= s.temperature %></td>
+      <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
+    </tr>
+  <% end %>
+
+</table>
+</div>
+<div class="column">
+	<% percentage = (total.to_f / @employees.count.to_f * 100).round(2) %>
+	<div class="total-title">Porcentaje de ocupación</div>	
+	<div class="total-occupation">
+		<%= percentage %>%
+	</div>
+	<table class="table is-fullwidth">
+	<% by_department.each do |k, v| %>
+	  <% department = Department.find(k) %>
+	  <% p = (v.to_f / department.users.where(status: User::ACTIVE).count.to_f * 100).round(2) %>
+	  <tr>
+	  	<td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
+	  	<td><%= department.name %></td>
+	  </tr>
+	<% end %>
+    </table>
+</div>
+</div>
+<% else %>
+<div class="not-today">
+  No hay empleados dentro de las instalaciones
+</div>
+<% end %>

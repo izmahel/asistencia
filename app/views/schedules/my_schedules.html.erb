@@ -1,0 +1,49 @@
+<h1 class="employee-name"><%= current_user.first_name %> <%= current_user.last_name %></h1>
+<table class="table is-fullwidth is-hoverable is-bordered schedule-table small-table">
+  <tr>
+  	<th>Estado</th>
+  	<th>Fecha</th>
+  	<th class="td-center">08:00/13:30</th>
+  	<th class="td-center">14:30/20:00</th>
+  	<th>Motivo</th>
+  	<th>Autorizó</th>
+  	<th class="td-center"><span title="Temperatura">Temp.</span></th>
+  	<th class="td-center">Entrada</th>
+  	<th class="td-center">Salida</th>
+  </tr>
+  
+  <% @schedules.each do |s| %>
+    <tr>
+      <td>
+      	<% if s.work_date > Date.today %>
+      	  <span class="tag is-warning">Programada</span>
+      	<% elsif s.work_date == Date.today %>
+      	  <span class="tag is-success">HOY</span>
+      	<% else %>
+      	  <span class="tag is-primary">Pasada</span>
+      	<% end %>
+      </td>
+      <td>
+      	<%= l s.work_date.to_date, format: "%A %d de %B" %>
+      </td>
+      <td class="td-center">
+      	<% if s.h1 %>
+      	  <span class="icon has-text-success"><i class="fas fa-check"></i></span>
+        <% end %>		
+      </td>
+      <td class="td-center">
+      	<% if s.h2 %>
+      	  <span class="icon has-text-success"><i class="fas fa-check"></i></span>
+        <% end %>
+      		
+      </td>	
+      <td><%= s.notes %></td>
+      <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %></td>
+      <td class="td-center"><%=  s.temperature %></td>
+      <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
+      <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
+    </tr>
+  <% end %>
+
+</table>
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html class='has-navbar-fixed-top'>
+  <head>
+    <title>Asistencia CIMAV</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <nav class="navbar is-warning" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/"><strong>Asistencia CIMAV</strong></a>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarAsistencia">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navbarAsistencia" class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+                <img src="<%= current_user.display_url %>" class="nav-menu-img" alt="<%= current_user.fullname %>">&nbsp;&nbsp;&nbsp;<%= current_user.fullname %>
+            </a>
+            <div class="navbar-dropdown is-right">
+              <a class="navbar-item" href="/">HOY</a>
+              <a class="navbar-item" href="/mis-entradas">Mis Entradas</a>
+              <hr class="navbar-divider">
+              <%= link_to 'Ocupación actual', '/ocupacion', class: 'navbar-item' %>
+              <% if d = is_department_admin? %>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="/administrar/<%= d.id %>">Administrar Departamento</a>
+              <% end %> 
+              <hr class="navbar-divider">
+              <%= link_to 'Salir', '/logout', class: 'navbar-item' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <%= yield %>
+    </div>
+    <input type="hidden" id="max-occupation" value="<%= Schedule::MAX %>">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </body>
+</html>

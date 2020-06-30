@@ -1,0 +1,76 @@
+<%= form_with(url: "/registro/guardar-entrada", method: "post", remote: false) do %>
+<input type="hidden" name="id" value="<%= @schedule.id %>">
+<div class="columns is-centered"><div class="column is-half">
+<div class="card card-today">
+  <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-48x48"><img src="<%= current_user.display_url %>" class="is-rounded" alt="<%= current_user.first_name %>"></figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-4"><%= current_user.first_name %> <%= current_user.last_name %></p>
+            <p class="subtitle is-6"><%= current_user.department.name %></p>
+          </div>
+        </div>
+
+        <div class="content">
+        	<%
+        	  if @schedule.h1 && @schedule.h2 
+        	  	hours = "Hoy todo el día"
+        	  elsif @schedule.h1 && !@schedule.h2 
+        	  	hours = "Hoy de 8:00 a 13:30"
+        	  else
+        	    hours = "Hoy de 14:30 a 20:00"
+        	  end	
+        	%>
+
+        	<strong>Programado:</strong> <%= hours %><br>
+        	<strong>Autorizado por:</strong> <%= @schedule.authorized_by.first_name %> <%= @schedule.authorized_by.last_name %><br>
+        	<strong>Observaciones:</strong> <%= @schedule.user_notes %><br>
+        	<strong>Lista de verificación:</strong> <span class="icon has-text-success"><i class="fas fa-check"></i></span><br><br>
+        	<strong>Temperatura:</strong> <input type="text" name="temperature" class="input temperature" required>
+        	<!--
+			<table class="table small-table">
+			  <tr><th></th><th>SÍ</th><th>NO</th></tr>
+			  <% c = 0
+			     if !@schedule.in.nil? 
+			     	q_disabled = 'disabled' 
+			     else 
+			     	q_disabled = ''
+			     end
+
+			     Schedule::QUESTIONS.each do |q| %>
+			     <% 
+			       c = c + 1 
+
+			       if @schedule["q#{c}"].nil?
+			         q_true = ''
+			         q_false = ''
+			       elsif @schedule["q#{c}"]
+                     q_true = 'checked'
+			         q_false = ''
+			       else 
+			       	 q_true = ''
+			         q_false = 'checked'
+			       end 
+			       
+			     %>
+			     <tr>
+			     	<td><%= q %></td>
+			     	<td></td>
+			     	<td><span class="icon has-text-success"><i class="fas fa-check"></i></span></td>
+			     </tr>
+			  <% end %>
+			</table>
+		    -->
+			<div class="save-checklist">
+			  <% if @schedule.in.nil? %>
+			  <button class="button is-success" type="submit">Registrar entrada</button>
+			  <% end %>
+			</div>
+        </div>
+      </div>
+
+</div>
+</div></div>
+<% end %>

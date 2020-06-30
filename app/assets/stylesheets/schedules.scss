@@ -1,0 +1,121 @@
+// Place all the styles related to the Schedules controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+body, html {
+  padding: 0 !important;
+}
+
+.total-occupation {
+  text-align: center;
+  font-size: 4em;
+  margin-top: 0.3em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px dashed #ddd;
+}
+
+.total-title {
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.3em 0;
+}
+
+.temperature {
+  font-size: 2em;
+}
+
+.nav-menu-img {
+  border-radius: 20px;
+}
+
+.verified {
+  text-align: center;
+  margin-top: 2em;
+}
+
+.not-today {
+  margin-top: 100px;
+  font-size: 32px;
+  color: #888;
+  text-align: center;
+}
+
+.today-status {
+  text-align: center;
+  font-size: 80%;
+  .icon {
+    font-size: 150px;
+    width: 250px;
+    height: 250px;
+  }
+  
+}
+
+.save-checklist {
+  margin-bottom: 4em;
+  margin-top: 2em;
+  text-align: center;
+  button {
+    font-size: 1.2em;
+  }
+}
+
+.small-table {
+  font-size: 80%;
+}
+
+.card-today {
+  margin-top: 2em;
+  margin-bottom: 10em;
+}
+
+h1.employee-name {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+
+.schedule-date {
+  font-size: 1.2em;
+  text-align: center;
+  margin-bottom: 1em;
+  a {
+    color: #666;
+  }
+}
+
+.schedule-table {
+  .tag {
+    width: 100%;
+  }
+  .td-center {
+    text-align: center !important;
+  }
+  .td-occupation {
+    font-weight: bold;
+    text-align: right !important;
+  }
+  .td-employee {
+    width: 24em;
+  }
+  .td-hours {
+    width: 12em;
+  }
+  .td-img {
+    width: 58px;
+    padding-right: 0 !important;
+    padding-bottom: 0;
+  }
+  .td-save {
+    width: 3em;
+  }
+  img {
+    padding-right: 0 !important;
+    padding-bottom: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 32px;
+  }
+}

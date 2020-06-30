@@ -1,0 +1,62 @@
+<h1 class="department-name"><%= @department.name %></h1>
+<h2 class="schedule-date">
+  <a href="/administrar/<%= @department.id %>/<%= @yesterday %>"><span class="icon"><i class="fas fa-caret-left"></i></span></a>
+  <%= l @date.to_date, format: "%A %d de %B de %Y" %>
+  <a href="/administrar/<%= @department.id %>/<%= @tomorrow %>"><span class="icon"><i class="fas fa-caret-right"></i></span></a>
+</h2>
+<input type="hidden" id="unsaved" value="0">
+<input type="hidden" id="work-date" value="<%= @date %>">
+<input type="hidden" id="department-id" value="<%= @department.id %>">
+<table class="table is-fullwidth is-hoverable schedule-table">
+  <tr>
+  	<th colspan="2" class="td-employee">Empleado</th>
+  	<th class="td-center td-hours">08:00 - 13:30</th>
+  	<th class="td-center td-hours">14:30 - 20:00</th>
+  	<th>¿Motivo?</th>
+  	<th class="td-save"></th>
+  </tr>
+  <% 
+    employees_count = 0 
+    count_h1 = 0
+    count_h2 = 0
+  %>
+  <% @department.users.where(status: User::ACTIVE).order(:first_name, :last_name).each do |u| %>
+    <%
+      employees_count += 1
+      
+      schedule = Schedule.where(work_date: @date, user_id: u.id).first
+      checked_h1 = ''
+      checked_h2 = ''
+  	  if schedule 
+        checked_h1 = 'checked="checked"' if schedule.h1 
+        checked_h2 = 'checked="checked"' if schedule.h2 
+        count_h1 += 1 if schedule.h1 
+        count_h2 += 1 if schedule.h2
+        notes = schedule.notes
+  	  end
+    %>
+    <tr>
+      <td class="td-img td-center"><img class="is-rounded" src="<%= u.display_url %>"></td>
+      <td class="td-employee"><%= u.first_name %> <%= u.last_name %></td>
+      <td class="td-center td-hours"><input type="checkbox" class="check-h1" id="check-h1-<%= u.id %>" data-user-id="<%= u.id %>" <%= checked_h1 %>></td>
+      <td class="td-center td-hours"><input type="checkbox" class="check-h2" id="check-h2-<%= u.id %>" data-user-id="<%= u.id %>" <%= checked_h2 %>></td>
+      <td class="td-notes"><input type="text" class="input notes" id="notes-<%= u.id %>" data-user-id="<%= u.id %>" value="<%= notes %>"></td>
+      <td class="td-save">
+      	<button class="save-button button is-link" disabled id="save-<%= u.id %>" data-user-id="<%= u.id %>"><span class="icon"><i class="fas fa-calendar-check"></i></span></button>
+      </td>
+    </tr>
+  <% end %>
+
+  <% percentage_h1 = (count_h1.to_f / employees_count.to_f * 100).round(2) %>
+  <% percentage_h2 = (count_h2.to_f / employees_count.to_f * 100).round(2) %>
+  <% percentage_h1 = 0 if percentage_h1 <= 0 %>
+  <% percentage_h2 = 0 if percentage_h2 <= 0 %>
+  <tr>
+  	<td colspan="2" class="td-occupation">Ocupación Máxima <%= Schedule::MAX %>%:</td>
+  	<td id="occupation-h1" class="td-center td-percentage"><%= percentage_h1 %>%</td>
+  	<td id="occupation-h2" class="td-center td-percentage"><%= percentage_h2 %>%</td>
+  	<td></td>
+  	<td></td>
+  </tr>
+</table>
+<input type="hidden" id="employees-count" value="<%= employees_count %>">

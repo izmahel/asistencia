@@ -1,0 +1,105 @@
+<% if @today_schedule %>
+<%= form_with(url: "/guardar-verificacion", method: "post", remote: false) do %>
+<input type="hidden" name="id" value="<%= @today_schedule.id %>">
+<div class="card card-today">
+  <div class="card-content">
+  	<div class="columns">
+  	  <div class="column is-narrow">
+  	    <% if @today_schedule.passed.nil? %>
+  	    <div class="today-status">
+  	      <div class="icon has-text-warning"><i class="fas fa-exclamation"></i></div><br>
+  	      No ha sido llenada la<br>lista de verificación
+  	    </div>
+        <% elsif @today_schedule.passed %>
+          <% url = "http://asistencia.cimav.edu.mx/registro/entrada/#{@today_schedule.id}" %>
+          <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=<%= url %>&choe=UTF-8" alt="QR">
+          <div class="verified"><span class="icon has-text-success"><i class="fas fa-check"></i></span> Verificado</div>
+        <% else %>
+        <div class="today-status">
+          <div class="icon has-text-danger"><i class="fas fa-times"></i></div><br>
+  	      No pasó la<br>lista de verificación
+  	    </div>  
+        <% end %>
+      </div>
+      <div class="column">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-48x48"><img src="<%= current_user.display_url %>" class="is-rounded" alt="<%= current_user.first_name %>"></figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-4"><%= current_user.first_name %> <%= current_user.last_name %></p>
+            <p class="subtitle is-6"><%= current_user.department.name %></p>
+          </div>
+        </div>
+
+        <div class="content">
+        	<%
+        	  if @today_schedule.h1 && @today_schedule.h2 
+        	  	hours = "Hoy todo el día"
+        	  elsif @today_schedule.h1 && !@today_schedule.h2 
+        	  	hours = "Hoy de 8:00 a 13:30"
+        	  else
+        	    hours = "Hoy de 14:30 a 20:00"
+        	  end	
+        	%>
+
+        	<strong>Programado:</strong> <%= hours %><br>
+        	<strong>Autorizado por:</strong> <%= @today_schedule.authorized_by.first_name %> <%= @today_schedule.authorized_by.last_name %><br>
+        	<% if !@today_schedule.in.nil? %>
+        	  <strong>Entrada: </strong> <%= l @today_schedule.in.to_datetime, format: "%H:%M" %>
+        	  <strong> Salida: </strong> <%= l @today_schedule.out.to_datetime, format: "%H:%M" rescue '--' %>
+        	<%end %>
+        	<br><br>
+        	<strong>Lista de verificación</strong>
+			<table class="table small-table">
+			  <tr><th></th><th>SÍ</th><th>NO</th></tr>
+			  <% c = 0
+			     if !@today_schedule.in.nil? 
+			     	q_disabled = 'disabled' 
+			     else 
+			     	q_disabled = ''
+			     end
+
+			     Schedule::QUESTIONS.each do |q| %>
+			     <% 
+			       c = c + 1 
+
+			       if @today_schedule["q#{c}"].nil?
+			         q_true = ''
+			         q_false = ''
+			       elsif @today_schedule["q#{c}"]
+                     q_true = 'checked'
+			         q_false = ''
+			       else 
+			       	 q_true = ''
+			         q_false = 'checked'
+			       end 
+			       
+			     %>
+			     <tr>
+			     	<td><%= q %></td>
+			     	<td><input type="radio" name="q<%= c %>" value="true" <%= q_true %> <%= q_disabled %>></td>
+			     	<td><input type="radio" name="q<%= c %>" value="false" <%= q_false %> <%= q_disabled %>></td>
+			     </tr>
+			  <% end %>
+			  <tr>
+			  	<td colspan="3">
+			  		Observaciones:<br>
+			  		<input type="text" name="user_notes" class="input" <%= q_disabled %> value="<%= @today_schedule.user_notes %>">
+			</table>
+			<div class="save-checklist">
+			  <% if @today_schedule.in.nil? %>
+			  <button class="button is-success" type="submit">Actualizar</button>
+			  <% end %>
+			</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+<% else %>
+<div class="not-today">
+	No tienes programadas entradas para hoy.
+</div>
+<% end %>

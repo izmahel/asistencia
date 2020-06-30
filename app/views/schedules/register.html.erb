@@ -11,12 +11,10 @@
   	<th></th>
   	<th></th>
   	<th>Nombre</th>
-  	<th>Fecha</th>
-  	<th>Motivo</th>
-  	<th>Autorizó</th>
+    <th>Hora</th>
   	<th class="td-center"><span title="Temperatura">Temp.</span></th>
-  	<th class="td-center">Entrada</th>
-  	<th class="td-center">Salida</th>
+  	<th class="td-center">Entra</th>
+  	<th class="td-center">Sale</th>
   </tr>
   
   <% @schedules.each do |s| %>
@@ -44,8 +42,6 @@
         %>
         <%= hours %>
       </td>
-      <td><%= s.notes %></td>
-      <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %></td>
       <td class="td-center"><%= s.temperature %></td>
       <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
       <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>

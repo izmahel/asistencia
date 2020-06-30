@@ -12,16 +12,11 @@
 
   <body>
     <nav class="navbar is-black" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand" style="float: left;"><a class="navbar-item" href="/registro"><strong>Registro CIMAV</strong></a></div>
-        <div class="navbar-start" style="padding-top: 0.3em;">
-          &nbsp;&nbsp;&nbsp;&nbsp;<a href="/registro" class="button">Todos</a>
+      <div class="navbar-brand" style="float: left; padding-top: 0.3em; padding-left: 0.3em;">
+          <a href="/registro" class="button"><span class="icon"><i class="fas fa-home"></i></span></a>
            &nbsp;&nbsp;&nbsp;&nbsp;<a href="/registro/entradas" class="button is-success">Entradas</a>
            &nbsp;&nbsp;&nbsp;&nbsp;<a href="/registro/salidas" class="button is-danger">Salidas</a>
         </div>
-        <div class="navbar-end">
-          <a href="/registro/logout" style="color: #fff;" class="navbar-item">Cerrar sesión</a>
-        </div>
-      <div class="is-clearfix"></div>
     </nav>
     <div class="container">
       <%= yield %>

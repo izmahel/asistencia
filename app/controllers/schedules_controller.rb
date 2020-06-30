@@ -66,8 +66,6 @@ class SchedulesController < ApplicationController
   def register_do_login
     if params[:password].to_s == 'caseta2020'
       session[:register_session] = "iniciada"
-      puts "xxxx  "
-      puts session[:register_session]
       redirect_to '/registro'
     else 
       redirect_to '/registro/login?fail=true'
@@ -94,7 +92,7 @@ class SchedulesController < ApplicationController
   end
 
   def register_in
-    @schedules = Schedule.where(in: nil, work_date: Date.today, passed: true)
+    @schedules = Schedule.joins(:user).where(in: nil, work_date: Date.today, passed: true).order(:first_name, :last_name)
   	render layout: 'register'
   end
 

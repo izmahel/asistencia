@@ -5,11 +5,11 @@
   <div class="card-content">
         <div class="media">
           <div class="media-left">
-            <figure class="image is-48x48"><img src="<%= current_user.display_url %>" class="is-rounded" alt="<%= current_user.first_name %>"></figure>
+            <figure class="image is-48x48"><img src="<%= @schedule.user.display_url %>" class="is-rounded" alt="<%= @schedule.user.first_name %>"></figure>
           </div>
           <div class="media-content">
-            <p class="title is-4"><%= current_user.first_name %> <%= current_user.last_name %></p>
-            <p class="subtitle is-6"><%= current_user.department.name %></p>
+            <p class="title is-4"><%= @schedule.user.first_name %> <%= @schedule.user.last_name %></p>
+            <p class="subtitle is-6"><%= @schedule.user.department.name %></p>
           </div>
         </div>
 

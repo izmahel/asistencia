@@ -12,7 +12,9 @@
   	    </div>
         <% elsif @today_schedule.passed %>
           <% url = "http://asistencia.cimav.edu.mx/registro/entrada/#{@today_schedule.id}" %>
+          <div style="text-align: center;">
           <img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=<%= url %>&choe=UTF-8" alt="QR">
+          </div>
           <div class="verified"><span class="icon has-text-success"><i class="fas fa-check"></i></span> Verificado</div>
         <% else %>
         <div class="today-status">

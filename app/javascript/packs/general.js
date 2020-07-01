@@ -126,7 +126,6 @@ $(document).on('click', '.save-button', function() {
 });
 
 $(document).on('click', '#create-unlimited', function() {
-  alert('cool')
   var notes = $('#unlimited-notes').val()
   var work_date = $('#work-date').val()
 

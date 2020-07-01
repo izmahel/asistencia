@@ -1,3 +1,7 @@
+<% if !current_user.course %>
+  <br><br>
+  <div class="notification is-primary">Es necesario tomar el curso de <strong>"Recomendaciones para un retorno seguro al trabajo ante el COVID-19"</strong> en la página <a href="https://climss.imss.gob.mx/">https://climss.imss.gob.mx/</a>.</div>
+<% end %>
 <% if @today_schedule %>
 <%= form_with(url: "/guardar-verificacion", method: "post", remote: false) do %>
 <input type="hidden" name="id" value="<%= @today_schedule.id %>">

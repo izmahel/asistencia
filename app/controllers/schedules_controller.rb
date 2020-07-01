@@ -128,7 +128,7 @@ class SchedulesController < ApplicationController
   end
 
   def employees
-    @employees = User.where(status: User::ACTIVE).order(:first_name, :last_name)
+    @employees = User.where(status: User::ACTIVE).order(:last_name, :first_name)
   end
 
   def toggle_course

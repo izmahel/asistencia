@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_01_060833) do
+ActiveRecord::Schema.define(version: 2020_07_01_071841) do
 
   create_table "departments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_060833) do
     t.boolean "admin"
     t.boolean "course"
     t.boolean "unlimited"
+    t.boolean "vulnerable"
     t.index ["department_id"], name: "index_users_on_department_id"
   end
 

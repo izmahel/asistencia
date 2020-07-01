@@ -40,7 +40,12 @@
     %>
     <tr>
       <td class="td-img td-center"><img class="is-rounded" src="<%= u.display_url %>"></td>
-      <td class="td-employee"><%= u.first_name %> <%= u.last_name %></td>
+      <td class="td-employee">
+        <%= u.first_name %> <%= u.last_name %>
+        <% if u.vulnerable %>
+          <br><span class="tag is-warning">Empleado vulnerable</span>
+        <% end %>
+      </td>
       <% if u.course %>
         <% if !u.unlimited %>
           <td class="td-center td-hours">

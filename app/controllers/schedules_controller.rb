@@ -135,10 +135,8 @@ class SchedulesController < ApplicationController
     @employee = User.find(params[:user_id])
     if !@employee.course 
       @employee.course = true
-      puts "SI"
     else 
       @employee.course = false
-      puts "NO"
     end
     if @employee.save
       render json: @employee
@@ -155,6 +153,17 @@ class SchedulesController < ApplicationController
       @employee.unlimited = true
     else 
       @employee.unlimited = false
+    end
+    @employee.save
+    render json: @employee
+  end
+
+  def toggle_vulnerable
+    @employee = User.find(params[:user_id])
+    if !@employee.vulnerable 
+      @employee.vulnerable = true
+    else 
+      @employee.vulnerable = false
     end
     @employee.save
     render json: @employee

@@ -21,6 +21,15 @@ $(document).on('change', '.check-unlimited', function() {
   })
 });
 
+$(document).on('change', '.check-vulnerable', function() {
+  url = '/toggle-vulnerable'
+  user_id = $(this).data('user-id')
+  $.post( url, { user_id: user_id })
+  .done(function( data ) {
+      
+  })
+});
+
 
 function get_max_employees() {
   var max_occupation = parseInt($('#max-occupation').val())

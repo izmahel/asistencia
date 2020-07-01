@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get '/administrar-empleados' => 'schedules#employees' 
   post '/toggle-course' => 'schedules#toggle_course'
   post '/toggle-unlimited' => 'schedules#toggle_unlimited'
+  post '/toggle-vulnerable' => 'schedules#toggle_vulnerable'
   post '/generar-entrada' => 'schedules#generate_unlimited'
 
   get '/mis-entradas' => 'schedules#my_schedules'

@@ -22,6 +22,7 @@
   %>
   <% @department.users.where(status: User::ACTIVE).order(:first_name, :last_name).each do |u| %>
     <%
+      
       employees_count += 1
       
       schedule = Schedule.where(work_date: @date, user_id: u.id).first
@@ -30,20 +31,44 @@
   	  if schedule 
         checked_h1 = 'checked="checked"' if schedule.h1 
         checked_h2 = 'checked="checked"' if schedule.h2 
-        count_h1 += 1 if schedule.h1 
-        count_h2 += 1 if schedule.h2
+        if !u.unlimited 
+          count_h1 += 1 if schedule.h1 
+          count_h2 += 1 if schedule.h2
+        end
         notes = schedule.notes
   	  end
     %>
     <tr>
       <td class="td-img td-center"><img class="is-rounded" src="<%= u.display_url %>"></td>
       <td class="td-employee"><%= u.first_name %> <%= u.last_name %></td>
-      <td class="td-center td-hours"><input type="checkbox" class="check-h1" id="check-h1-<%= u.id %>" data-user-id="<%= u.id %>" <%= checked_h1 %>></td>
-      <td class="td-center td-hours"><input type="checkbox" class="check-h2" id="check-h2-<%= u.id %>" data-user-id="<%= u.id %>" <%= checked_h2 %>></td>
-      <td class="td-notes"><input type="text" class="input notes" id="notes-<%= u.id %>" data-user-id="<%= u.id %>" value="<%= notes %>"></td>
-      <td class="td-save">
-      	<button class="save-button button is-link" disabled id="save-<%= u.id %>" data-user-id="<%= u.id %>"><span class="icon"><i class="fas fa-calendar-check"></i></span></button>
-      </td>
+      <% if u.course %>
+        <% if !u.unlimited %>
+          <td class="td-center td-hours">
+            <input type="checkbox" class="check-h1" id="check-h1-<%= u.id %>" data-user-id="<%= u.id %>" <%= checked_h1 %>>
+          </td>
+          <td class="td-center td-hours">
+            <input type="checkbox" class="check-h2" id="check-h2-<%= u.id %>" data-user-id="<%= u.id %>" <%= checked_h2 %>>
+          </td>
+        <% else %>
+          <td colspan="2" class="td-center">Acceso ilimitado</td>
+        <% end %>
+        <td class="td-notes">
+          <% if !u.unlimited %>
+          <input type="text" class="input notes" id="notes-<%= u.id %>" data-user-id="<%= u.id %>" value="<%= notes %>">
+          <% else %>
+            <%= notes %>
+          <% end %>
+        </td>
+        <td class="td-save">
+          <% if !u.unlimited %>
+        	<button class="save-button button is-link" disabled id="save-<%= u.id %>" data-user-id="<%= u.id %>"><span class="icon"><i class="fas fa-calendar-check"></i></span></button>
+          <% end %>
+        </td>
+      <% else %>
+        <td colspan="2" class="td-center">Falta realizar el curso del IMMS</td>
+        <td></td>
+        <td></td>
+      <% end %>
     </tr>
   <% end %>
 

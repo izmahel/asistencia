@@ -18,14 +18,16 @@ module ApplicationHelper
   end
 
   def register_authenticated?
-    puts session[:register_session]
-    puts "-----xxxxx"
     return session[:register_session] == "iniciada"
   end
 
   def is_department_admin?
     department = Department.where(user_id: current_user.id).first
     department 
+  end 
+
+  def is_admin?
+    return current_user.admin
   end 
 
   def current_user

@@ -3,6 +3,24 @@ $(document).on('click', '.burger', function() {
   $(".navbar-menu").toggleClass("is-active")
 });
 
+$(document).on('change', '.check-course', function() {
+  url = '/toggle-course'
+  user_id = $(this).data('user-id')
+  $.post( url, { user_id: user_id })
+  .done(function( data ) {
+      
+  })
+});
+
+$(document).on('change', '.check-unlimited', function() {
+  url = '/toggle-unlimited'
+  user_id = $(this).data('user-id')
+  $.post( url, { user_id: user_id })
+  .done(function( data ) {
+      
+  })
+});
+
 
 function get_max_employees() {
   var max_occupation = parseInt($('#max-occupation').val())
@@ -94,6 +112,28 @@ $(document).on('click', '.save-button', function() {
     var department_id = $('#department-id').val()
     var work_date = $('#work-date').val()
     url = '/administrar/' + department_id + '/' + work_date
+    window.location = url;
+  })
+});
+
+$(document).on('click', '#create-unlimited', function() {
+  alert('cool')
+  var notes = $('#unlimited-notes').val()
+  var work_date = $('#work-date').val()
+
+  if (notes.length <=  0) {
+    alert('Necesitas especificar el motivo')
+    $('#unlimited-notes').focus()
+    return false
+  }
+
+
+  var url = '/generar-entrada'
+  $.post( url, { 
+                 notes: notes
+               })
+  .done(function( data ) {
+    url = '/'
     window.location = url;
   })
 });

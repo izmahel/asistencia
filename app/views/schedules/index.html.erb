@@ -46,6 +46,7 @@
         	%>
 
         	<strong>Programado:</strong> <%= hours %><br>
+          <strong>Motivo:</strong> <%= @today_schedule.notes %><br>
         	<strong>Autorizado por:</strong> <%= @today_schedule.authorized_by.first_name %> <%= @today_schedule.authorized_by.last_name %><br>
         	<% if !@today_schedule.in.nil? %>
         	  <strong>Entrada: </strong> <%= l @today_schedule.in.to_datetime, format: "%H:%M" %>
@@ -100,6 +101,36 @@
   </div>
 </div>
 <% end %>
+<% elsif current_user.unlimited %>
+<div class="card card-today">
+  <div class="card-content">
+    <div class="columns">
+      <div class="column is-narrow">
+        <div class="today-status">
+          <div class="icon has-text-warning"><i class="fas fa-unlock"></i></div><br>
+          Acceso ilimitado
+        </div>
+      </div>
+      <div class="column">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-48x48"><img src="<%= current_user.display_url %>" class="is-rounded" alt="<%= current_user.first_name %>"></figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-4"><%= current_user.first_name %> <%= current_user.last_name %></p>
+            <p class="subtitle is-6"><%= current_user.department.name %></p>
+          </div>
+        </div>
+
+        <div class="content">
+          <input type="text" class="input" name="notes" id="unlimited-notes" value="" placeholder="¿Motivo?"><br/><br/>
+          <button class="button is-link" id="create-unlimited">Generar entrada para hoy</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
 <% else %>
 <div class="not-today">
 	No tienes programadas entradas para hoy.

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_082859) do
+ActiveRecord::Schema.define(version: 2020_07_01_060833) do
 
   create_table "departments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_082859) do
     t.integer "who"
     t.integer "status"
     t.string "temperature"
+    t.boolean "passed"
     t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
@@ -60,6 +61,9 @@ ActiveRecord::Schema.define(version: 2020_06_29_082859) do
     t.bigint "department_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "admin"
+    t.boolean "course"
+    t.boolean "unlimited"
     t.index ["department_id"], name: "index_users_on_department_id"
   end
 

@@ -10,7 +10,12 @@ Rails.application.routes.draw do
   get '/administrar/:id' => 'departments#show'
   get '/administrar/:id/:date' => 'departments#show'
   post '/administrar/guardar' => 'schedules#save'
-  
+
+  get '/administrar-empleados' => 'schedules#employees' 
+  post '/toggle-course' => 'schedules#toggle_course'
+  post '/toggle-unlimited' => 'schedules#toggle_unlimited'
+  post '/generar-entrada' => 'schedules#generate_unlimited'
+
   get '/mis-entradas' => 'schedules#my_schedules'
   post '/guardar-verificacion' => 'schedules#save_checklist'
 

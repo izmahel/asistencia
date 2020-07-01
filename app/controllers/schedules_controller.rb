@@ -127,4 +127,49 @@ class SchedulesController < ApplicationController
   	end
   end
 
+  def employees
+    @employees = User.where(status: User::ACTIVE).order(:first_name, :last_name)
+  end
+
+  def toggle_course
+    @employee = User.find(params[:user_id])
+    if !@employee.course 
+      @employee.course = true
+      puts "SI"
+    else 
+      @employee.course = false
+      puts "NO"
+    end
+    if @employee.save
+      render json: @employee
+    else
+      puts "ERROR" 
+      @employee.errors.each{|attr,err| puts "#{attr} - #{err.type}" }
+      
+    end
+  end
+
+  def toggle_unlimited
+    @employee = User.find(params[:user_id])
+    if !@employee.unlimited 
+      @employee.unlimited = true
+    else 
+      @employee.unlimited = false
+    end
+    @employee.save
+    render json: @employee
+  end
+
+  def generate_unlimited 
+    schedule = Schedule.new
+    schedule.work_date = Time.now.strftime("%Y-%m-%d")
+    schedule.user_id = current_user.id
+    schedule.who = current_user.id
+    schedule.h1 = true
+    schedule.h2 = true
+    schedule.notes = params[:notes]
+    schedule.save
+    render json: schedule
+  end
+
 end

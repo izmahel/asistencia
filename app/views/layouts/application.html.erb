@@ -35,6 +35,10 @@
                 <hr class="navbar-divider">
                 <a class="navbar-item" href="/administrar/<%= d.id %>">Administrar Departamento</a>
               <% end %> 
+              <% if is_admin? %>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="/administrar-empleados">Administrar Empleados</a>
+              <% end %>
               <hr class="navbar-divider">
               <%= link_to 'Salir', '/logout', class: 'navbar-item' %>
             </div>

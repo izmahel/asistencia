@@ -20,8 +20,8 @@
   <% total = 0 %>
   <% @schedules.each do |s| %>
     <% total = total + 1 %>
-    <% if by_department[s.user.department.name] 
-    	 by_department[s.user.department_id] += 1
+    <% if !by_department[s.user.department_id].nil?
+    	   by_department[s.user.department_id] += 1
        else 
        	 by_department[s.user.department_id] = 1
        end

@@ -2,7 +2,7 @@ class Schedule < ApplicationRecord
   belongs_to :authorized_by, :foreign_key => "who", :class_name => "User"
   belongs_to :user
 
-  MAX = 30
+  MAX = 50
 
   QUESTIONS = [
     "Fiebre",

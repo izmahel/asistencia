@@ -4,10 +4,20 @@
 <table class="table is-fullwidth is-hoverable is-bordered schedule-table small-table">  
   <% @schedules.each do |s| %>
     <tr>
-      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>"></td>
+      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>">
+        <% if current_user.is_student  %>
+        <span class="tag is-warning  is-light">Estudiante</span>
+        <% else %>
+        <span class="tag is-primary  is-light">Empleado</span>
+        <% end %>
+      </td>
       <td>
-      <strong><%= s.user.fullname %></strong><br>
-      	<% if s.h1 && s.h2 
+      <strong><%= s.user.fullname %></strong> 
+      <br>
+      	<% 
+        if current_user.is_student
+          hours = "#{s.start / 100}:00 - #{s.end / 100}:00"
+        elsif s.h1 && s.h2 
     	  	hours = "Todo el día"
     	  elsif s.h1 && !s.h2 
     	  	hours = "De 8:00 a 13:30"
@@ -18,8 +28,77 @@
       Horario:  <%= hours %><br>
       Notas: <%= s.notes %><br>
       Autorizado por: <%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %>
+      <% if current_user.is_student %>
+      <br>Esudiantes del departamento dentro: 
+      <% first_stu = true
+         count_students = 0
+         current_user.department.students_in.each do |s| 
+              count_students = count_students + 1
+              if first_stu 
+                first_stu = false %><%= s.user.first_name %> <%= s.user.last_name %><% else %>, <%= s.user.first_name %> <%= s.user.last_name %>
+              <% end %>
+        <% end %>
+        <% if count_students == 0 %>
+         Ninguno
+        <% end %>
+        <% count_per_lab = 0 %>
+      <br>Estudiantes en laboratorio <%= s.notes %>: 
+        <% first_per_lab = true
+            in_lab = Schedule.where(laboratory_id: s.laboratory_id, work_date: Date.today, out: nil).where.not(in: nil)
+
+            in_lab.each do |s| 
+              count_per_lab = count_per_lab + 1
+              if first_per_lab 
+                first_per_lab = false %>
+                <%= s.user.first_name %> <%= s.user.last_name %>
+              <% else %>
+                , <%= s.user.first_name %> <%= s.user.last_name %>
+              <% end %>
+            <% end %>
+        <% if count_per_lab == 0 %>
+          Ninguno
+        <% end %>
+      <br>Es necesario que este dentro:
+
+            <% first_sup = true
+            sup_in = false
+            current_user.supervisors.each do |s| 
+              if s.user.is_in?
+                %> <span class="icon has-text-success"><i class="fas fa-check"></i></span> <%
+              else 
+                %> <span class="icon has-text-danger"><i class="fas fa-times"></i></span> <%
+              end
+              sup_in = sup_in || s.user.is_in? 
+              if first_sup 
+                first_sup = false %>
+                <%= s.user.first_name %> <%= s.user.last_name %>
+              <% else %>
+                , <%= s.user.first_name %> <%= s.user.last_name %>
+              <% end %>
+            <% end %>
+      <% end %>
       </td>
-      <td class="td-center"><a href="/registro/entrada/<%= s.id %>" class="button is-success" >Dar Entrada</a></td>
+      <td class="td-center">
+        <% restrictions = false %>
+        <% if current_user.is_student %>
+          <% if  !sup_in %>
+            <% restrictions = true %>
+            No se encuentra ningún supervisor del alumno dentro del CIMAV.<br>
+         <% end %>
+         <% if  count_students >= Department::MAX_STUDENTS %>
+          <% restrictions = true %>
+          Departamento al limite de capacidad (<%= Department::MAX_STUDENTS %> estudiantes dentro)<br>
+          <% end %>
+          <% if count_per_lab >= User::MAX_PER_LAB %>
+          <% restrictions = true %>
+          
+          Laboratorio al limite de capacidad (<%= User::MAX_PER_LAB %> estudiantes dentro)<br>
+          <% end %>
+        <% end %>
+        <% if !restrictions %>
+          <a href="/registro/entrada/<%= s.id %>" class="button is-success" >Dar Entrada</a>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 

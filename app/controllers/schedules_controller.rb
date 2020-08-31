@@ -4,6 +4,26 @@ class SchedulesController < ApplicationController
 
   def index 
   	@today_schedule = Schedule.where(user_id: current_user.id, work_date: Date.today).first
+
+    # Generar schedule Hack
+    if !@today_schedule
+      sql ="SELECT C.id, labcitas_development.appointments.appointment_date, start, end, D.id, labcitas_development.appointments.id, labcitas_development.laboratories.name, laboratory_id FROM labcitas_development.appointments LEFT JOIN labcitas_development.students A ON student_id = A.id LEFT JOIN labcitas_development.users B ON appointments.user_id = B.id LEFT JOIN users C ON A.email_cimav = C.email LEFT JOIN users D ON B.email = D.email LEFT JOIN labcitas_development.laboratories ON appointments.laboratory_id = laboratories.id WHERE appointment_date = '#{Date.today}' AND A.email_cimav = '#{current_user.email}'"
+      records_array = ActiveRecord::Base.connection.execute(sql)
+      if records_array.present?
+        records_array.each do |row|
+          @today_schedule = Schedule.new
+          @today_schedule.user_id = row[0]
+          @today_schedule.work_date = row[1] 
+          @today_schedule.start = row[2] 
+          @today_schedule.end = row[3] 
+          @today_schedule.who  = row[4]  
+          @today_schedule.appointment_id = row[5] 
+          @today_schedule.notes  = row[6]
+          @today_schedule.laboratory_id  = row[7]
+          @today_schedule.save
+        end
+      end
+    end 
   end
 
   def occupation

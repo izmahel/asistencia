@@ -3,7 +3,13 @@
 <table class="table is-fullwidth is-hoverable is-bordered schedule-table small-table">  
   <% @schedules.each do |s| %>
     <tr>
-      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>"></td>
+      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>">
+        <% if current_user.is_student  %>
+        <span class="tag is-warning  is-light">Estudiante</span>
+        <% else %>
+        <span class="tag is-primary  is-light">Empleado</span>
+        <% end %>
+      </td>
       <td>
       	<strong><%= s.user.fullname %></strong><br>
         <% if s.h1 && s.h2 

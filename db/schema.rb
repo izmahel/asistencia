@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_01_071841) do
+ActiveRecord::Schema.define(version: 2020_08_31_033655) do
 
   create_table "departments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -49,7 +49,19 @@ ActiveRecord::Schema.define(version: 2020_07_01_071841) do
     t.integer "status"
     t.string "temperature"
     t.boolean "passed"
+    t.integer "start"
+    t.integer "end"
+    t.integer "appointment_id"
     t.index ["user_id"], name: "index_schedules_on_user_id"
+  end
+
+  create_table "student_supervisors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "student_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["student_id"], name: "index_student_supervisors_on_student_id"
+    t.index ["user_id"], name: "index_student_supervisors_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -65,6 +77,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_071841) do
     t.boolean "course"
     t.boolean "unlimited"
     t.boolean "vulnerable"
+    t.boolean "is_student"
     t.index ["department_id"], name: "index_users_on_department_id"
   end
 

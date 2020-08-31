@@ -1,7 +1,10 @@
 class User < ApplicationRecord
   belongs_to :department
+  has_many :supervisors, :foreign_key => "student_id", :class_name => "StudentSupervisor"
   ACTIVE = 1
   INACTIVE = 2
+
+  MAX_PER_LAB = 1
 
   def fullname 
   	first_name + ' ' + last_name
@@ -14,4 +17,10 @@ class User < ApplicationRecord
   def display_url
     "https://cimav.edu.mx/foto/#{self.shortname}/256"
   end
+
+  def is_in?
+    sched = Schedule.where(user_id: self.id, work_date: Date.today, out: nil).where.not(in: nil).first
+    return sched 
+  end
+
 end

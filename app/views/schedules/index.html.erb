@@ -40,7 +40,9 @@
 
         <div class="content">
         	<%
-        	  if @today_schedule.h1 && @today_schedule.h2 
+            if current_user.is_student
+              hours = "#{@today_schedule.start / 100}:00 - #{@today_schedule.end / 100}:00"
+        	  elsif @today_schedule.h1 && @today_schedule.h2 
         	  	hours = "Hoy todo el día"
         	  elsif @today_schedule.h1 && !@today_schedule.h2 
         	  	hours = "Hoy de 8:00 a 13:30"
@@ -48,10 +50,18 @@
         	    hours = "Hoy de 14:30 a 20:00"
         	  end	
         	%>
-
+          
         	<strong>Programado:</strong> <%= hours %><br>
           <strong>Motivo:</strong> <%= @today_schedule.notes %><br>
         	<strong>Autorizado por:</strong> <%= @today_schedule.authorized_by.first_name %> <%= @today_schedule.authorized_by.last_name %><br>
+          <% if current_user.is_student %>
+            <strong>Notas:</strong> Es necesario que al ingresar al CIMAV se encuentren al menos 1 de las siguientes personas:
+            <ul>
+            <% current_user.supervisors.each do |s| %>
+              <li><%= s.user.first_name %> <%= s.user.last_name %></li>
+            <% end %>
+            </ul>
+          <% end %>
         	<% if !@today_schedule.in.nil? %>
         	  <strong>Entrada: </strong> <%= l @today_schedule.in.to_datetime, format: "%H:%M" %>
         	  <strong> Salida: </strong> <%= l @today_schedule.out.to_datetime, format: "%H:%M" rescue '--' %>

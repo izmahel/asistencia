@@ -29,7 +29,7 @@ class SchedulesController < ApplicationController
   def occupation
     @date = Time.now.strftime("%Y-%m-%d")
     @schedules = Schedule.where(work_date: @date, out: nil).where.not(in: nil).order(:in)
-    @employees = User.where(status: User::ACTIVE)
+    @employees = User.where(status: User::ACTIVE, is_student: 0)
   end
 
   def my_schedules

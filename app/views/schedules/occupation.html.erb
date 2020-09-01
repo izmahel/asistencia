@@ -19,6 +19,7 @@
   <% by_department = {} %>
   <% total = 0 %>
   <% @schedules.each do |s| %>
+    <% next if s.user.is_student %>
     <% total = total + 1 %>
     <% if !by_department[s.user.department_id].nil?
     	   by_department[s.user.department_id] += 1

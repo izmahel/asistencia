@@ -20,7 +20,7 @@
     count_h1 = 0
     count_h2 = 0
   %>
-  <% @department.users.where(status: User::ACTIVE).order(:first_name, :last_name).each do |u| %>
+  <% @department.users.where(status: User::ACTIVE, is_student: 0).order(:first_name, :last_name).each do |u| %>
     <%
       
       employees_count += 1

@@ -1,0 +1,109 @@
+<h1 class="department-name">Reporte</h1>
+<form action="/reporte" method="post">
+<table class="table is-fullwidth">
+  <tr>
+  	<th>Departamento</th>
+  	<th>Persona</th>
+  	<th>Inicio</th>
+  	<th>Fin</th>
+  </tr>
+  <tr>
+  	<td>
+  		<div class="select"><select name="department_id" onchange="this.form.submit()">
+  		  <option value="">--</option>
+  		<% Department.order(:name).each do |d| 
+  		  selected = ""
+  		  selected = "selected = 'selected'" if d.id.to_i == @department_id.to_i %>
+          <option value="<%= d.id %>" <%= selected %>><%= d.name %></option>
+        <% end %>
+        </select></div>
+  	</td>
+  	<td>
+      <div class="select"><select name="user_id" onchange="this.form.submit()">
+      	<option value="">--</option>
+      	<% if !@department_id.blank? 
+      	      users = User.where(status: User::ACTIVE, department_id: @department_id).order(:first_name, :last_name).each
+           else 
+           	  users = User.where(status: User::ACTIVE).order(:first_name, :last_name).each
+           end
+  		   users.each do |emp| 
+  		   	 selected = ""
+             selected = "selected = 'selected'" if emp.id.to_i == @user_id.to_i %>
+             <option value="<%= emp.id %>" <%= selected %>><%= emp.first_name %> <%= emp.last_name %></option>
+          <% end %>
+        </select></div>
+  	</td>
+  	<td><input type="date" class="input" name="date_start" value="<%= @date_start %>" onchange="this.form.submit()"></td>
+  	<td><input type="date" class="input" name="date_end" value="<%= @date_end %>" onchange="this.form.submit()"></td>
+  </tr>
+</table>
+<% if @schedules.count > 0 %>
+<table class="table is-fullwidth is-hoverable is-bordered schedule-table small-table">
+  <tr>
+  	<th></th>
+  	<th></th>
+  	<th>Nombre</th>
+  	<th>Fecha</th>
+  	<th>Motivo</th>
+  	<th>Autorizó</th>
+  	<th class="td-center"><span title="Temperatura">Temp.</span></th>
+  	<th class="td-center">Entrada</th>
+  	<th class="td-center">Salida</th>
+  	<th class="td-center">Notas Salida</th>
+  </tr>
+  <% by_department = {} %>
+  <% total = 0 %>
+  <% @schedules.each do |s| %>
+    <% next if s.user.is_student %>
+    <% total = total + 1 %>
+    <% if !by_department[s.user.department_id].nil?
+    	   by_department[s.user.department_id] += 1
+       else 
+       	 by_department[s.user.department_id] = 1
+       end
+    %>
+    <tr>
+      <td class="td-center">
+      	<% if s.passed.nil? %>
+  	      <span class="icon has-text-warning"><i class="fas fa-exclamation"></i></span>
+        <% elsif s.passed %>
+          <span class="icon has-text-success"><i class="fas fa-check"></i></span>
+        <% else %>
+          <span class="icon has-text-danger"><i class="fas fa-times"></i></span>
+        <% end %>
+      </td>
+      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>"><br>
+      <% if s.user.is_student  %>
+        <span class="tag is-warning  is-light">Estudiante</span>
+        <% else %>
+        <span class="tag is-primary  is-light">Empleado</span>
+        <% end %></td>
+      <td><%= s.user.fullname %><br><span class="tag is-light"><%= s.user.department.name %></span></td>
+      <td>
+      	
+      	<% if s.h1 && s.h2 
+    	  	hours = "Todo el día"
+    	  elsif s.h1 && !s.h2 
+    	  	hours = "De 8:00 a 13:30"
+    	  else
+    	    hours = "De 14:30 a 20:00"
+    	  end	
+        %>
+        <%= hours %>
+      </td>
+      <td><%= s.notes %></td>
+      <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %><br><span class="tag is-light"><%= s.authorized_by.department.name %></span></td>
+      <td class="td-center"><%= s.temperature %></td>
+      <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
+      <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
+      <td><%= s.out_notes %></td>
+    </tr>
+  <% end %>
+
+</table>
+<% else %>
+<div class="not-today">
+  No hay registros
+</div>
+<% end %>
+</form>

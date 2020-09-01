@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   post '/administrar/guardar' => 'schedules#save'
 
   get '/administrar-empleados' => 'schedules#employees' 
+  get '/administrar-estudiantes' => 'schedules#students' 
   post '/toggle-course' => 'schedules#toggle_course'
   post '/toggle-unlimited' => 'schedules#toggle_unlimited'
   post '/toggle-vulnerable' => 'schedules#toggle_vulnerable'
@@ -37,6 +38,9 @@ Rails.application.routes.draw do
   get '/mis-estudiantes' => 'supervisors#my_students'
   post '/agregar-supervisor' => 'supervisors#add_supervisor'
   post '/borrar-supervisor' => 'supervisors#delete_supervisor'
+
+  get '/reporte' => 'reports#index'
+  post '/reporte' => 'reports#index'
 
   
   root :to => 'schedules#index'

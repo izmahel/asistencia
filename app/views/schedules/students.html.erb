@@ -9,7 +9,7 @@
   
   <% @employees.each do |e| %>
     <%
-      next if e.is_student
+      next if !e.is_student
       check_course = e.course ? 'checked' : ''
       check_unlimited = e.unlimited ? 'checked' : ''
       check_vulnerable = e.vulnerable ? 'checked' : ''

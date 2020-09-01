@@ -162,6 +162,10 @@ class SchedulesController < ApplicationController
     @employees = User.where(status: User::ACTIVE).order(:last_name, :first_name)
   end
 
+  def students
+    @employees = User.where(status: User::ACTIVE).order(:last_name, :first_name)
+  end
+
   def toggle_course
     @employee = User.find(params[:user_id])
     if !@employee.course 

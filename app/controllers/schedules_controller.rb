@@ -7,7 +7,7 @@ class SchedulesController < ApplicationController
 
     # Generar schedule Hack
     if !@today_schedule
-      sql ="SELECT C.id, labcitas_development.appointments.appointment_date, start, end, D.id, labcitas_development.appointments.id, labcitas_development.laboratories.name, laboratory_id FROM labcitas_development.appointments LEFT JOIN labcitas_development.students A ON student_id = A.id LEFT JOIN labcitas_development.users B ON appointments.user_id = B.id LEFT JOIN users C ON A.email_cimav = C.email LEFT JOIN users D ON B.email = D.email LEFT JOIN labcitas_development.laboratories ON appointments.laboratory_id = laboratories.id WHERE appointment_date = '#{Date.today}' AND A.email_cimav = '#{current_user.email}'"
+      sql ="SELECT C.id, labcitas_production.appointments.appointment_date, start, end, D.id, labcitas_production.appointments.id, labcitas_production.laboratories.name, laboratory_id FROM labcitas_production.appointments LEFT JOIN labcitas_production.students A ON student_id = A.id LEFT JOIN labcitas_production.users B ON appointments.user_id = B.id LEFT JOIN users C ON A.email_cimav = C.email LEFT JOIN users D ON B.email = D.email LEFT JOIN labcitas_production.laboratories ON appointments.laboratory_id = laboratories.id WHERE appointment_date = '#{Date.today}' AND A.email_cimav = '#{current_user.email}'"
       records_array = ActiveRecord::Base.connection.execute(sql)
       if records_array.present?
         records_array.each do |row|

@@ -30,6 +30,10 @@ module ApplicationHelper
     return current_user.admin
   end 
 
+  def has_students?
+    return current_user.student_supervisor.count > 0
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end

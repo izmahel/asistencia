@@ -20,9 +20,9 @@
     count_h1 = 0
     count_h2 = 0
   %>
-  <% @department.users.where(status: User::ACTIVE, is_student: 0).order(:first_name, :last_name).each do |u| %>
+  <% @department.users.where(status: User::ACTIVE).order(:first_name, :last_name).each do |u| %>
     <%
-      
+       next if u.is_student 
       employees_count += 1
       
       schedule = Schedule.where(work_date: @date, user_id: u.id).first

@@ -1,4 +1,4 @@
-<%= form_with(url: "/registro/guardar-entrada", method: "post", remote: false) do %>
+<%= form_with(url: "/registro/guardar-salida", method: "post", remote: false) do %>
 <input type="hidden" name="id" value="<%= @schedule.id %>">
 <div class="columns is-centered"><div class="column is-half">
 <div class="card card-today">
@@ -26,48 +26,25 @@
         	  end	
         	%>
 
-        	<strong>Programado:</strong> <%= hours %><br>
+        	<strong>Programado:</strong> <%= hours %>
+            <% if @schedule.user.is_student %>
+              <% time = "#{DateTime.now.hour}#{DateTime.now.minute.to_s.rjust(2, '0')}".to_i %>
+              <% if time > @schedule.end.to_i %>
+                <span class="tag is-warning">Excede la hora de salida se notificará a asesor</span>
+              <% end %> 
+            <% end %>
+            <br>
         	<strong>Autorizado por:</strong> <%= @schedule.authorized_by.first_name %> <%= @schedule.authorized_by.last_name %><br>
+        	<strong>Motivo:</strong> <%= @schedule.notes %><br>
         	<strong>Observaciones:</strong> <%= @schedule.user_notes %><br>
         	<strong>Lista de verificación:</strong> <span class="icon has-text-success"><i class="fas fa-check"></i></span><br><br>
-        	<strong>Temperatura:</strong> <input type="text" name="temperature" class="input temperature" required>
-        	<!--
-			<table class="table small-table">
-			  <tr><th></th><th>SÍ</th><th>NO</th></tr>
-			  <% c = 0
-			     if !@schedule.in.nil? 
-			     	q_disabled = 'disabled' 
-			     else 
-			     	q_disabled = ''
-			     end
-
-			     Schedule::QUESTIONS.each do |q| %>
-			     <% 
-			       c = c + 1 
-
-			       if @schedule["q#{c}"].nil?
-			         q_true = ''
-			         q_false = ''
-			       elsif @schedule["q#{c}"]
-                     q_true = 'checked'
-			         q_false = ''
-			       else 
-			       	 q_true = ''
-			         q_false = 'checked'
-			       end 
-			       
-			     %>
-			     <tr>
-			     	<td><%= q %></td>
-			     	<td></td>
-			     	<td><span class="icon has-text-success"><i class="fas fa-check"></i></span></td>
-			     </tr>
-			  <% end %>
-			</table>
-		    -->
+        	<strong>Temperatura:</strong> <%= @schedule.temperature %><br>
+        	<strong>Notas de salida:</strong><br>
+            <input type="text" name="out_notes" class="input" value="<%= @schedule.out_notes %>">
 			<div class="save-checklist">
-			  <% if @schedule.in.nil? %>
-			  <button class="button is-success" type="submit">Registrar entrada</button>
+			  <% if @schedule.out.nil? %>
+			  
+			  <button class="button is-success" type="submit">Registrar salida</button>
 			  <% end %>
 			</div>
         </div>

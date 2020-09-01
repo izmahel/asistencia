@@ -16,6 +16,7 @@
   	<th class="td-center"><span title="Temperatura">Temp.</span></th>
   	<th class="td-center">Entra</th>
   	<th class="td-center">Sale</th>
+    <th>Notas de salida</th>
   </tr>
   
   <% @schedules.each do |s| %>
@@ -29,12 +30,12 @@
           <span class="icon has-text-danger"><i class="fas fa-times"></i></span>
         <% end %>
       </td>
-      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>"></td>
-      <td><%= s.user.fullname %></td>
+      <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url rescue '--' %>"></td>
+      <td><%= s.user.fullname rescue '--' %></td>
       <td>
       	
       	<% 
-        if current_user.is_student
+        if s.user.is_student
               hours = "#{s.start / 100}:00 - #{s.end / 100}:00"
         elsif s.h1 && s.h2 
     	  	hours = "Todo el día"
@@ -46,7 +47,7 @@
         %>
         <%= hours %>
       </td>
-      <td><% if current_user.is_student  %>
+      <td><% if s.user.is_student  %>
         <span class="tag is-warning  is-light">Estudiante</span>
         <% else %>
         <span class="tag is-primary  is-light">Empleado</span>
@@ -55,6 +56,7 @@
       <td class="td-center"><%= s.temperature %></td>
       <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
       <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
+      <td class="td-center"><%= s.out_notes  %></td>
     </tr>
   <% end %>
 

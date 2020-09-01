@@ -3,6 +3,7 @@ class Schedule < ApplicationRecord
   belongs_to :user
 
   MAX = 50
+  SECURITY_EMAIL = 'ramon.gomez@cimav.edu.mx'
 
   QUESTIONS = [
     "Fiebre",

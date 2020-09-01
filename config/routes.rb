@@ -29,9 +29,15 @@ Rails.application.routes.draw do
   get '/registro/salidas' => 'schedules#register_out'
   get '/registro/entrada/:id' => 'schedules#check_in'
   post '/registro/guardar-entrada' => 'schedules#save_in'
-  get '/registro/salida/:id' => 'schedules#save_out'
+  get '/registro/salida/:id' => 'schedules#check_out'
+  post '/registro/guardar-salida' => 'schedules#save_out'
 
   get '/ocupacion' => 'schedules#occupation'
+
+  get '/mis-estudiantes' => 'supervisors#my_students'
+  post '/agregar-supervisor' => 'supervisors#add_supervisor'
+  post '/borrar-supervisor' => 'supervisors#delete_supervisor'
+
   
   root :to => 'schedules#index'
 end

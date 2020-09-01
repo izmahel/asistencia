@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   belongs_to :department
   has_many :supervisors, :foreign_key => "student_id", :class_name => "StudentSupervisor"
+  has_many :student_supervisor
   ACTIVE = 1
   INACTIVE = 2
 

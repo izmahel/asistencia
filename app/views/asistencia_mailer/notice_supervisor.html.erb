@@ -1,0 +1,10 @@
+El estudiante <%= @schedule.user.first_name %> <%= @schedule.user.last_name %> presenta registrada una salida que excede el tiempo programado.<br><br>
+<% hours = "#{@schedule.start / 100}:00 - #{@schedule.end / 100}:00" %>
+<strong>Programado:</strong> <%= @schedule.work_date %> <%= hours %><br>
+<strong>Entrada</strong> <%= l @schedule.in.to_datetime, format: "%Y-%m-%d %H:%M" rescue '--' %><br>
+<strong>Salida</strong> <%= l @schedule.out.to_datetime, format: "%Y-%m-%d %H:%M" rescue '--' %><br>
+<strong>Asesor:</strong> <%= @advisor.first_name %> <%= @advisor.last_name %><br>
+<strong>Autorizado por:</strong> <%= @schedule.authorized_by.first_name %> <%= @schedule.authorized_by.last_name %><br>
+<strong>Motivo:</strong> <%= @schedule.notes %><br>
+<strong>Observaciones:</strong> <%= @schedule.user_notes %><br>
+<strong>Notas de salida:</strong><%= @schedule.out_notes %>

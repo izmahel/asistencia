@@ -4,7 +4,7 @@
   <% @schedules.each do |s| %>
     <tr>
       <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>">
-        <% if current_user.is_student  %>
+        <% if s.user.is_student  %>
         <span class="tag is-warning  is-light">Estudiante</span>
         <% else %>
         <span class="tag is-primary  is-light">Empleado</span>
@@ -12,7 +12,10 @@
       </td>
       <td>
       	<strong><%= s.user.fullname %></strong><br>
-        <% if s.h1 && s.h2 
+        <% 
+        if s.user.is_student
+          hours = "#{s.start / 100}:00 - #{s.end / 100}:00"
+        elsif s.h1 && s.h2 
           hours = "Todo el día"
         elsif s.h1 && !s.h2 
           hours = "De 8:00 a 13:30"
@@ -26,7 +29,28 @@
         Entrada: <%= l s.in.to_datetime, format: "%H:%M" rescue '--' %><br>
         Temperatura: <%= s.temperature %>
       </td>
-      <td class="td-center"><a href="/registro/salida/<%= s.id %>" class="button is-danger" >Dar salida</a></td>
+      <td class="td-center">
+        <% has_errors = false %>
+        <% if !s.user.is_student %>
+          <% s.user.student_supervisor.each do |e|%>
+            <% if e.student.is_in? 
+              sups = 0
+              e.student.supervisors.each do |sup| 
+                if sup.user.is_in?
+                  sups = sups + 1
+                end
+              end %>
+              <% if sups <= 1 %>
+                <% has_errors = true %>
+                <%= e.student.first_name %> <%= e.student.last_name %> esta dentro y solo hay un supervisor dentro<br>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <% if !has_errors %>
+          <a href="/registro/salida/<%= s.id %>" class="button is-danger" >Dar salida</a>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </table>

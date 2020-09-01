@@ -126,6 +126,7 @@ class SchedulesController < ApplicationController
   	render layout: 'register'
   end
 
+
   def save_in
   	schedule = Schedule.find(params[:id])
   	schedule.temperature = params[:temperature]
@@ -136,13 +137,23 @@ class SchedulesController < ApplicationController
   end
 
   def check_out
+    @schedule = Schedule.where(id: params[:id], passed: true).first
   	render layout: 'register'
   end
   
   def save_out
   	schedule = Schedule.find(params[:id])
+    schedule.out_notes = params[:out_notes]
   	schedule.out = Time.now
   	if schedule.save
+      if schedule.user.is_student
+        time = "#{DateTime.now.hour}#{DateTime.now.minute.to_s.rjust(2, '0')}".to_i
+        if time > schedule.end.to_i
+          # Enviar correo a supervisor y comisión de seguridad
+          puts "Envia------------------"
+          AsistenciaMailer.notice_supervisor(schedule).deliver_now          
+        end 
+      end
   	  redirect_to '/registro/salidas'
   	end
   end

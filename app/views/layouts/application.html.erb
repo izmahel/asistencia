@@ -35,6 +35,10 @@
                 <hr class="navbar-divider">
                 <a class="navbar-item" href="/administrar/<%= d.id %>">Administrar Departamento</a>
               <% end %> 
+              <% if has_students? %>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="/mis-estudiantes">Mis Estudiantes Supervisados</a> 
+              <% end %>
               <% if is_admin? %>
                 <hr class="navbar-divider">
                 <a class="navbar-item" href="/administrar-empleados">Administrar Empleados</a>

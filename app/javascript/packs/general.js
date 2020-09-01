@@ -145,3 +145,32 @@ $(document).on('click', '#create-unlimited', function() {
     window.location = url;
   })
 });
+
+
+$(document).on('click', '.add-supervisor', function() {
+  var student_id = $(this).data('student-id');
+  var user_id = $('#user_id_' + student_id).val();
+  var url = '/agregar-supervisor'
+  $.post( url, { user_id: user_id, 
+                 student_id: student_id
+               })
+  .done(function( data ) {
+    url = '/mis-estudiantes';
+    window.location = url;
+  })
+});
+
+$(document).on('click', '.del-supervisor', function() {
+  if (confirm('Confirmar eliminación de supervisor')) {
+    var sup_id = $(this).data('sup-id');  
+    var url = '/borrar-supervisor'
+    $.post( url, { sup_id: sup_id
+               })
+    .done(function( data ) {
+      url = '/mis-estudiantes';
+      window.location = url;
+    })
+  }
+});
+
+

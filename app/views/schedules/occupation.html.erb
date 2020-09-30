@@ -17,10 +17,17 @@
   	<th class="td-center">Entrada</th>
   </tr>
   <% by_department = {} %>
+  <% by_location = {} %>
   <% total = 0 %>
   <% @schedules.each do |s| %>
     <% next if s.user.is_student %>
     <% total = total + 1 %>
+    <% if !by_location[s.user.location_id].nil?
+         by_location[s.user.location_id] += 1
+       else 
+         by_location[s.user.location_id] = 1
+       end
+    %>
     <% if !by_department[s.user.department_id].nil?
     	   by_department[s.user.department_id] += 1
        else 
@@ -66,6 +73,18 @@
 	<div class="total-occupation">
 		<%= percentage %>%
 	</div>
+  <div class="total-title">Ocupación por sede</div>  
+  <table class="table is-fullwidth">
+  <% by_location.each do |k, v| %>
+    <% location = Location.find(k) %>
+    <% p = (v.to_f / location.users.where(status: User::ACTIVE).count.to_f * 100).round(2) %>
+    <tr>
+      <td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
+      <td><%= location.name %></td>
+    </tr>
+  <% end %>
+    </table>
+  <div class="total-title">Por departamento</div>  
 	<table class="table is-fullwidth">
 	<% by_department.each do |k, v| %>
 	  <% department = Department.find(k) %>

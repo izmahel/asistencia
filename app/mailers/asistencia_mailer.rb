@@ -1,5 +1,5 @@
 class AsistenciaMailer < ApplicationMailer
-  def notice_supervisor(schedule)
+  def send_buzon(schedule)
 
     @schedule = schedule
 

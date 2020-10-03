@@ -1,4 +1,4 @@
-2wclass SchedulesController < ApplicationController
+class SchedulesController < ApplicationController
   before_action :auth_required, only: [:index, :my_schedules, :save, :save_checklist, :occupation ]
   before_action :register_auth_required, only: [:register, :register_in, :register_out, :check_in, :check_out, :save_out ]
 

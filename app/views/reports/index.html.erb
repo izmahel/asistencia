@@ -80,7 +80,7 @@
         <% end %></td>
       <td><%= s.user.fullname %><br><span class="tag is-light"><%= s.user.department.name %></span></td>
       <td>
-      	
+        	
       	<% if s.h1 && s.h2 
     	  	hours = "Todo el día"
     	  elsif s.h1 && !s.h2 
@@ -89,7 +89,7 @@
     	    hours = "De 14:30 a 20:00"
     	  end	
         %>
-        <%= hours %>
+        <%= s.work_date %> <%= hours %>
       </td>
       <td><%= s.notes %></td>
       <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %><br><span class="tag is-light"><%= s.authorized_by.department.name %></span></td>

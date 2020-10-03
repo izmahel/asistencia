@@ -70,6 +70,7 @@ function enable_save(used_id) {
   $("#unsaved").val("1")
 }
 
+/**
 $(document).on('change', '.check-h1', function() {
   user_id = $(this).data('user-id')
   if (!validate_h1(user_id)) {
@@ -90,24 +91,28 @@ $(document).on('change', '.check-h2', function() {
   enable_save(user_id)
 });
 
+**/
+
 $(document).on('change', '.notes', function() {
   user_id = $(this).data('user-id')
   enable_save(user_id)
 });
 
 
-$(document).on('click', '.save-button', function() {
+// $(document).on('click', '.save-button', function() {
+$(document).on('change', '.check-h1', function() {
   var user_id = $(this).data('user-id')
   var h1 = $('#check-h1-' + user_id).prop('checked') ? 'true' : 'false'
-  var h2 = $('#check-h2-' + user_id).prop('checked') ? 'true' : 'false'
-  var notes = $('#notes-' + user_id).val()
+  var h2 = $('#check-h1-' + user_id).prop('checked') ? 'true' : 'false'
+  //var notes = $('#notes-' + user_id).val()
+  var notes = 'Asistencia programada'
   var work_date = $('#work-date').val()
 
-  if ((notes.length <=  0) && ((h1 == 'true') || (h2 == 'true'))) {
-    alert('Necesitas especificar el motivo')
-    $('#notes-' + user_id).focus()
-    return false
-  }
+  // if ((notes.length <=  0) && ((h1 == 'true') || (h2 == 'true'))) {
+  //  alert('Necesitas especificar el motivo')
+  //  $('#notes-' + user_id).focus()
+  //  return false
+  // }
 
 
   var url = '/administrar/guardar'

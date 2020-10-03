@@ -2,8 +2,8 @@ class Schedule < ApplicationRecord
   belongs_to :authorized_by, :foreign_key => "who", :class_name => "User"
   belongs_to :user
 
-  MAX = 50
-  SECURITY_EMAIL = 'ramon.gomez@cimav.edu.mx'
+  MAX = 100
+  SECURITY_EMAIL = 'marcos.lopez@cimav.edu.mx'
 
   QUESTIONS = [
     "Fiebre",

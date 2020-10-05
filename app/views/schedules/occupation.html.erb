@@ -91,7 +91,7 @@
         <table class="table is-fullwidth">
         <% by_department.each do |k, v| %>
           <% department = Department.find(k) %>
-          <% p = (v.to_f / department.users.where(status: User::ACTIVE).count.to_f * 100).round(2) %>
+          <% p = (v.to_f / department.users.where(status: User::ACTIVE).where.not(is_student: 1).count.to_f * 100).round(2) %>
           <tr>
                 <td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
                 <td><%= department.name %></td>

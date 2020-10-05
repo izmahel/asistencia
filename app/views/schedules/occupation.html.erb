@@ -7,37 +7,39 @@
 <div class="column is-three-quarters">
 <table class="table is-fullwidth is-hoverable is-bordered schedule-table small-table">
   <tr>
-  	<th></th>
-  	<th></th>
-  	<th>Nombre</th>
-  	<th>Fecha</th>
-  	<th>Motivo</th>
-  	<th>Autorizó</th>
-  	<th class="td-center"><span title="Temperatura">Temp.</span></th>
-  	<th class="td-center">Entrada</th>
+        <th></th>
+        <th></th>
+        <th>Nombre</th>
+        <th>Fecha</th>
+        <th>Motivo</th>
+        <th>Autorizó</th>
+        <th class="td-center"><span title="Temperatura">Temp.</span></th>
+        <th class="td-center">Entrada</th>
   </tr>
   <% by_department = {} %>
   <% by_location = {} %>
   <% total = 0 %>
   <% @schedules.each do |s| %>
     <% next if s.user.is_student %>
-    <% total = total + 1 %>
-    <% if !by_location[s.user.location_id].nil?
-         by_location[s.user.location_id] += 1
-       else 
-         by_location[s.user.location_id] = 1
+    <% total = total + 1 if s.user.department_id.to_i != 26%>
+    <% if s.user.department_id.to_i != 26
+         if !by_location[s.user.location_id].nil?
+           by_location[s.user.location_id] += 1
+         else
+           by_location[s.user.location_id] = 1
+         end
        end
     %>
     <% if !by_department[s.user.department_id].nil?
-    	   by_department[s.user.department_id] += 1
-       else 
-       	 by_department[s.user.department_id] = 1
+           by_department[s.user.department_id] += 1
+       else
+         by_department[s.user.department_id] = 1
        end
     %>
     <tr>
       <td class="td-center">
-      	<% if s.passed.nil? %>
-  	      <span class="icon has-text-warning"><i class="fas fa-exclamation"></i></span>
+        <% if s.passed.nil? %>
+              <span class="icon has-text-warning"><i class="fas fa-exclamation"></i></span>
         <% elsif s.passed %>
           <span class="icon has-text-success"><i class="fas fa-check"></i></span>
         <% else %>
@@ -47,14 +49,14 @@
       <td class="td-img td-center"><img class="is-rounded" src="<%= s.user.display_url %>"></td>
       <td><%= s.user.fullname %></td>
       <td>
-      	
-      	<% if s.h1 && s.h2 
-    	  	hours = "Todo el día"
-    	  elsif s.h1 && !s.h2 
-    	  	hours = "De 8:00 a 13:30"
-    	  else
-    	    hours = "De 14:30 a 20:00"
-    	  end	
+
+        <% if s.h1 && s.h2
+                hours = "Todo el día"
+          elsif s.h1 && !s.h2
+                hours = "De 8:00 a 13:30"
+          else
+            hours = "De 14:30 a 20:00"
+          end
         %>
         <%= hours %>
       </td>
@@ -68,32 +70,32 @@
 </table>
 </div>
 <div class="column">
-	<% percentage = (total.to_f / @employees.count.to_f * 100).round(2) %>
-	<div class="total-title">Porcentaje de ocupación</div>	
-	<div class="total-occupation">
-		<%= percentage %>%
-	</div>
-  <div class="total-title">Ocupación por sede</div>  
+        <% percentage = (total.to_f / @employees.count.to_f * 100).round(2) %>
+        <div class="total-title">Porcentaje de ocupación</div>
+        <div class="total-occupation">
+                <%= percentage %>%
+        </div>
+  <div class="total-title">Ocupación por sede</div>
   <table class="table is-fullwidth">
   <% by_location.each do |k, v| %>
     <% location = Location.find(k) %>
-    <% p = (v.to_f / location.users.where(status: User::ACTIVE).count.to_f * 100).round(2) %>
+    <% p = (v.to_f / location.users.where(status: User::ACTIVE).where.not(department_id: 26).count.to_f * 100).round(2) %>
     <tr>
       <td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
       <td><%= location.name %></td>
     </tr>
   <% end %>
     </table>
-  <div class="total-title">Por departamento</div>  
-	<table class="table is-fullwidth">
-	<% by_department.each do |k, v| %>
-	  <% department = Department.find(k) %>
-	  <% p = (v.to_f / department.users.where(status: User::ACTIVE).count.to_f * 100).round(2) %>
-	  <tr>
-	  	<td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
-	  	<td><%= department.name %></td>
-	  </tr>
-	<% end %>
+  <div class="total-title">Por departamento</div>
+        <table class="table is-fullwidth">
+        <% by_department.each do |k, v| %>
+          <% department = Department.find(k) %>
+          <% p = (v.to_f / department.users.where(status: User::ACTIVE).count.to_f * 100).round(2) %>
+          <tr>
+                <td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
+                <td><%= department.name %></td>
+          </tr>
+        <% end %>
     </table>
 </div>
 </div>

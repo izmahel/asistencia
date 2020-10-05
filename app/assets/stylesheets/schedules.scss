@@ -5,6 +5,13 @@ body, html {
   padding: 0 !important;
 }
 
+.mini {
+  font-size: 80%;
+  color: #666;
+  text-align: right !important;
+  white-space: pre;
+}
+
 .del-supervisor {
   cursor: pointer;
 }

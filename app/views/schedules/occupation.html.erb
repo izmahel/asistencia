@@ -80,10 +80,12 @@
   <table class="table is-fullwidth">
   <% by_location.each do |k, v| %>
     <% location = Location.find(k) %>
-    <% p = (v.to_f / location.users.where(status: User::ACTIVE).where.not(department_id: 26).count.to_f * 100).round(2) %>
+    <% tot_loc = location.users.where(status: User::ACTIVE).where.not(is_student: 1).where.not(department_id: 26).count.to_f %>
+    <% p = (v.to_f / tot_loc * 100).round(2) %>
     <tr>
       <td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
       <td><%= location.name %></td>
+      <td class="mini">(<%= v %> de <%= tot_loc.to_i %>)</td>
     </tr>
   <% end %>
     </table>
@@ -91,10 +93,12 @@
         <table class="table is-fullwidth">
         <% by_department.each do |k, v| %>
           <% department = Department.find(k) %>
-          <% p = (v.to_f / department.users.where(status: User::ACTIVE).where.not(is_student: 1).count.to_f * 100).round(2) %>
+          <% tot_dep = department.users.where(status: User::ACTIVE).where.not(is_student: 1).count.to_f %>
+          <% p = (v.to_f / tot_dep * 100).round(2) %>
           <tr>
                 <td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
                 <td><%= department.name %></td>
+                <td class="mini">(<%= v %> de <%= tot_dep.to_i %>)</td>
           </tr>
         <% end %>
     </table>

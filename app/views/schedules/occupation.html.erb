@@ -20,12 +20,15 @@
   <% by_location = {} %>
   <% total = 0 %>
   <% @schedules.each do |s| %>
+    <% next if s.user.department_id.to_i == 26 %>
     <% next if s.user.is_student %>
     <% total = total + 1 %>
-    <% if !by_location[s.user.location_id].nil?
-         by_location[s.user.location_id] += 1
-       else 
-         by_location[s.user.location_id] = 1
+    <% if s.user.department_id.to_i != 26 
+         if !by_location[s.user.location_id].nil?
+           by_location[s.user.location_id] += 1
+         else 
+           by_location[s.user.location_id] = 1
+         end
        end
     %>
     <% if !by_department[s.user.department_id].nil?

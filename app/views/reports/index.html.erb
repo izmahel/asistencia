@@ -1,15 +1,32 @@
 <h1 class="department-name">Reporte</h1>
-<form action="/reporte" method="post">
-<table class="table is-fullwidth">
+<form action="/reporte" method="post" id="reportform" name="reportform">
+<table class="table is-fullwidth" style="font-size: 80% !important;">
   <tr>
-  	<th>Departamento</th>
-  	<th>Persona</th>
-  	<th>Inicio</th>
-  	<th>Fin</th>
+    <th style="font-size: 80% !important;">Estudiantes</th>
+  	<th style="font-size: 80% !important;">Departamento</th>
+  	<th style="font-size: 80% !important;">Persona</th>
+  	<th style="font-size: 80% !important;">Inicio</th>
+  	<th style="font-size: 80% !important;">Fin</th>
   </tr>
   <tr>
+    <td>
+      <div class="select">
+      <select style="font-size: 80% !important;" name="show_students" onchange="this.form.submit()">
+        <% 
+        if @show_students 
+          sel_no_show = ""
+          sel_show = 'selected="selected"'
+        else 
+          sel_show = ""
+          sel_no_show = 'selected="selected"'
+        end
+        %>
+        <option value="0" <%= sel_no_show %>>No mostrar estudiantes</option>
+        <option value="1" <%= sel_show %>>Mostrar estudiantes</option>
+      </select></div>
+    </td>
   	<td>
-  		<div class="select"><select name="department_id" onchange="this.form.submit()">
+  		<div class="select"><select style="font-size: 80% !important;" name="department_id" onchange="this.form.submit()">
   		  <option value="">--</option>
   		<% Department.order(:name).each do |d| 
   		  selected = ""
@@ -19,7 +36,7 @@
         </select></div>
   	</td>
   	<td>
-      <div class="select"><select name="user_id" onchange="this.form.submit()">
+      <div class="select"><select style="font-size: 80% !important;" name="user_id" onchange="this.form.submit()">
       	<option value="">--</option>
       	<% if !@department_id.blank? 
       	      users = User.where(status: User::ACTIVE, department_id: @department_id).order(:first_name, :last_name).each
@@ -33,11 +50,14 @@
           <% end %>
         </select></div>
   	</td>
-  	<td><input type="date" class="input" name="date_start" value="<%= @date_start %>" onchange="this.form.submit()"></td>
-  	<td><input type="date" class="input" name="date_end" value="<%= @date_end %>" onchange="this.form.submit()"></td>
+  	<td><input type="date" style="font-size: 80% !important;" class="input" name="date_start" value="<%= @date_start %>" onchange="this.form.submit()"></td>
+  	<td><input type="date" style="font-size: 80% !important;" class="input" name="date_end" value="<%= @date_end %>" onchange="this.form.submit()"></td>
   </tr>
 </table>
 <% if @schedules.count > 0 %>
+<div style="text-align: center; margin: 1em; font-size: 1.5em;">
+<a onclick="doxls()">Versión excel</a>
+</div>
 <table class="table is-fullwidth is-hoverable is-bordered schedule-table small-table">
   <tr>
   	<th></th>
@@ -51,17 +71,10 @@
   	<th class="td-center">Salida</th>
   	<th class="td-center">Notas Salida</th>
   </tr>
-  <% by_department = {} %>
   <% total = 0 %>
   <% @schedules.each do |s| %>
-    <% next if s.user.is_student %>
+    <% next if !@show_students && s.user.is_student   %>
     <% total = total + 1 %>
-    <% if !by_department[s.user.department_id].nil?
-    	   by_department[s.user.department_id] += 1
-       else 
-       	 by_department[s.user.department_id] = 1
-       end
-    %>
     <tr>
       <td class="td-center">
       	<% if s.passed.nil? %>
@@ -107,3 +120,10 @@
 </div>
 <% end %>
 </form>
+<script>
+  function doxls() {
+    document.reportform.action = "/reporte/xls";
+    document.reportform.submit();
+    document.reportform.action = "/reporte";
+  }
+</script>

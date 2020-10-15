@@ -41,6 +41,8 @@ Rails.application.routes.draw do
 
   get '/reporte' => 'reports#index'
   post '/reporte' => 'reports#index'
+  get '/reporte/xls' => 'reports#xls'
+  post '/reporte/xls' => 'reports#xls'
 
   
   root :to => 'schedules#index'

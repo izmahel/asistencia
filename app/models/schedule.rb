@@ -19,7 +19,7 @@ class Schedule < ApplicationRecord
     "Perdida del sentido del Gusto",
     "Erupciones Cutaneas",
     "Perdida de color en los dedos de los pies o manos",
-    "Contacto con enfermo COVID-19"
+    "Contacto con enfermo COVID-19 sin tomar medidas de seguridad"
   ]
 
 end

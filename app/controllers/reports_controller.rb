@@ -67,11 +67,11 @@ class ReportsController < ApplicationController
     wb.add_worksheet(name: 'Asistencia') do |sheet|
       sheet.add_row ['Nombre', 'Departamento', 'Fecha', 'Motivo', 'Autorizó', 'Entrada', 'Salida']
       @schedules.each do |s|
-        nombre = s.user.fullname
-        departamento = s.user.department.name
-        fecha = s.work_date
-        motivo = s.notes
-        autorizo = s.authorized_by.fullname
+        nombre = s.user.fullname rescue '--'
+        departamento = s.user.department.name rescue '--'
+        fecha = s.work_date rescue '--'
+        motivo = s.notes rescue '--'
+        autorizo = s.authorized_by.fullname rescue '--'
         entrada = s.in.strftime("%I:%M%p") rescue '--'
         salida = s.out.strftime("%I:%M%p") rescue '--'
         sheet.add_row [nombre, departamento, fecha, motivo, autorizo, entrada, salida]

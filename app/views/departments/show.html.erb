@@ -1,4 +1,5 @@
 <h1 class="department-name"><%= @department.name %></h1>
+<input type="hidden" id="max-occupation" value="<%= @department.location.max %>">
 <h2 class="schedule-date">
   <a href="/administrar/<%= @department.id %>/<%= @yesterday %>"><span class="icon"><i class="fas fa-caret-left"></i></span></a>
   <%= l @date.to_date, format: "%A %d de %B de %Y" %>
@@ -82,7 +83,7 @@
   <% percentage_h1 = 0 if percentage_h1 <= 0 %>
   <% percentage_h2 = 0 if percentage_h2 <= 0 %>
   <tr>
-  	<td colspan="2" class="td-occupation">Ocupación Máxima <%= Schedule::MAX %>%:</td>
+  	<td colspan="2" class="td-occupation">Ocupación Máxima en <%= @department.location.name %>: <%= @department.location.max %>%</td>
   	<td id="occupation-h1" class="td-center td-percentage"><%= percentage_h1 %>%</td>
   	<td id="occupation-h2" class="td-center td-percentage"><%= percentage_h2 %>%</td>
   	<td></td>

@@ -1,4 +1,4 @@
-<h1 class="department-name">Ocupación actual<br>(Máximo <%= Schedule::MAX %>%)</h1>
+<h1 class="department-name">Ocupación actual</h1>
 <h2 class="schedule-date">
   <%= l @date.to_date, format: "%A %d de %B de %Y" %>
 </h2>
@@ -62,7 +62,7 @@
         <%= hours %>
       </td>
       <td><%= s.notes %></td>
-      <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %><br><%= s.user.department.name %></td>
+      <td><%= s.authorized_by.first_name rescue '--' %> <%= s.authorized_by.last_name rescue '--' %><br><%= s.user.department.name rescue '--' %></td>
       <td class="td-center"><%= s.temperature %></td>
       <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
     </tr>
@@ -83,7 +83,13 @@
     <% tot_loc = location.users.where(status: User::ACTIVE).where.not(is_student: 1).where.not(department_id: 26).count.to_f %>
     <% p = (v.to_f / tot_loc * 100).round(2) %>
     <tr>
-      <td style="padding-right: 1em; text-align: right;"><strong><%= p %>%</strong></td>
+      <%
+        location_style = ''
+        if p > location.max 
+          location_style = 'color: #b00;'
+        end 
+      %>
+      <td style="padding-right: 1em; text-align: right;"><strong style="<%= location_style %>"><%= p %>%</strong><br><span style="font-size: 70%">(<%= location.max %>% MAX)</span></td>
       <td><%= location.name %></td>
       <td class="mini">(<%= v %> de <%= tot_loc.to_i %>)</td>
     </tr>

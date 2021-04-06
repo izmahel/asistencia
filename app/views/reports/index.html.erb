@@ -105,7 +105,7 @@
         <%= s.work_date %> <%= hours %>
       </td>
       <td><%= s.notes %></td>
-      <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %><br><span class="tag is-light"><%= s.authorized_by.department.name %></span></td>
+      <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %><br><span class="tag is-light"><%= s.authorized_by.department.name rescue 'Sin departamento' %></span></td>
       <td class="td-center"><%= s.temperature %></td>
       <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
       <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>

@@ -21,9 +21,11 @@
   <% total = 0 %>
   <% @schedules.each do |s| %>
     <% next if s.user.department_id.to_i == 26 %>
+    <% next if s.user.department_id.to_i == 30 %>
+    <% next if s.user.department_id.to_i == 32 %>
     <% next if s.user.is_student %>
-    <% total = total + 1 if s.user.department_id.to_i != 26%>
-    <% if s.user.department_id.to_i != 26
+    <% total = total + 1 if (s.user.department_id.to_i != 26) &&  (s.user.department_id.to_i != 30) &&  (s.user.department_id.to_i != 32) %>
+    <% if (s.user.department_id.to_i != 26) &&  (s.user.department_id.to_i != 30) &&  (s.user.department_id.to_i != 32)
          if !by_location[s.user.location_id].nil?
            by_location[s.user.location_id] += 1
          else
@@ -80,7 +82,7 @@
   <table class="table is-fullwidth">
   <% by_location.each do |k, v| %>
     <% location = Location.find(k) %>
-    <% tot_loc = location.users.where(status: User::ACTIVE).where.not(is_student: 1).where.not(department_id: 26).count.to_f %>
+    <% tot_loc = location.users.where(status: User::ACTIVE).where.not(is_student: 1).where.not(department_id: 26).where.not(department_id: 30).where.not(department_id: 32).count.to_f %>
     <% p = (v.to_f / tot_loc * 100).round(2) %>
     <tr>
       <%

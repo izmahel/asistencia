@@ -70,6 +70,7 @@
   	<th class="td-center">Entrada</th>
   	<th class="td-center">Salida</th>
   	<th class="td-center">Notas Salida</th>
+    <th></th>
   </tr>
   <% total = 0 %>
   <% @schedules.each do |s| %>
@@ -110,6 +111,15 @@
       <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
       <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
       <td><%= s.out_notes %></td>
+      <td>
+        <% if is_admin? %>
+          <a href="<%= edit_schedule_path(s) %>">Editar</a>
+        <% end %>
+        <% if !s.edit_notes.blank? %>
+          <br>
+          <strong><%= s.edit_by_user.fullname %>:</strong><br><%= s.edit_notes %><br><%= l s.edit_date.to_datetime, format: "%Y-%m-%d %H:%M" rescue '--'  %>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 

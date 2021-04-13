@@ -26,6 +26,33 @@ class SchedulesController < ApplicationController
     end 
   end
 
+  def edit 
+     @schedule = Schedule.find(params[:id])
+  end
+
+  def save_edit 
+    schedule = Schedule.find(params[:id])
+    schedule.temperature = params[:temperature]
+    if params[:in].blank? 
+      schedule.in =  nil
+    else
+      schedule.in =  params[:in] 
+    end
+    if params[:out].blank?
+      schedule.out =  params[:out]
+    else
+      schedule.out =  nil
+    end
+    schedule.edit_by = current_user.id
+    schedule.edit_notes =  params[:edit_notes]
+    schedule.edit_date = Time.now
+    if schedule.save
+      redirect_to '/reporte'
+    end
+  end
+
+
+
   def occupation
     @date = Time.now.strftime("%Y-%m-%d")
     @schedules = Schedule.where(work_date: @date, out: nil).where.not(in: nil).order(:in)

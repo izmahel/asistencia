@@ -1,0 +1,49 @@
+<div class="cita">
+<h1>Editar entrada</h1>
+<%= form_with(url: "/cita/actualizar", method: "post", remote: false) do %>
+<input type="hidden" name="id" value="<%= @schedule.id %>">
+<div class="columns is-centered"><div class="column is-half">
+<div class="card card-today">
+  <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-48x48"><img src="<%= @schedule.user.display_url %>" class="is-rounded" alt="<%= @schedule.user.first_name %>"></figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-4"><%= @schedule.user.first_name %> <%= @schedule.user.last_name %></p>
+            <p class="subtitle is-6"><%= @schedule.user.department.name %></p>
+          </div>
+        </div>
+
+        <div class="content">
+        	<%
+        	  if @schedule.user.is_student
+                hours = "#{@schedule.start / 100}:00 - #{@schedule.end / 100}:00"
+        	  elsif @schedule.h1 && @schedule.h2 
+        	  	hours = "Hoy todo el día"
+        	  elsif @schedule.h1 && !@schedule.h2 
+        	  	hours = "Hoy de 6:00 a 12:00"
+        	  else
+        	    hours = "Hoy de 13:00 a 19:00"
+        	  end	
+        	%>
+
+        	<strong>Programado:</strong> <%= hours %><br>
+        	<strong>Autorizado por:</strong> <%= @schedule.authorized_by.first_name %> <%= @schedule.authorized_by.last_name %><br>
+        	<strong>Observaciones:</strong> <%= @schedule.user_notes %><br>
+        	<strong>Lista de verificación:</strong> <span class="icon has-text-success"><i class="fas fa-check"></i></span><br><br>
+        	<strong>Temperatura:</strong> <input type="text" name="temperature" class="input" value="<%= @schedule.temperature %>" required><br><br>
+        	<strong>Entrada:</strong> <input type="text" name="in" class="input" value="<%= @schedule.in %>" ><br><br>
+        	<strong>Salida:</strong> <input type="text" name="out" class="input" value="<%= @schedule.out %>" ><br><br>
+        	<strong>Motivo edición:</strong> <input type="text" name="edit_notes" class="input" value="<%= @schedule.edit_notes %>" required><br><br>
+			<div class="save-checklist">
+			  <button class="button is-success" type="submit">Actualizar</button>
+			</div>
+        </div>
+      </div>
+
+</div>
+</div></div>
+<% end %>
+
+</div>

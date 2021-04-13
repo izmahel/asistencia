@@ -44,6 +44,9 @@ Rails.application.routes.draw do
   get '/reporte/xls' => 'reports#xls'
   post '/reporte/xls' => 'reports#xls'
 
+  # get '/entrada/editar/:id' => 'schedules#edit'
+  post '/cita/actualizar' => 'schedules#save_edit'
+
   
   root :to => 'schedules#index'
 end

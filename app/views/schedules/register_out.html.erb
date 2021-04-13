@@ -33,7 +33,7 @@
         <% has_errors = false %>
         <% if !s.user.is_student %>
           <% s.user.student_supervisor.each do |e|%>
-            <% if e.student.is_in? 
+            <% if e.student && e.student.is_in? 
               sups = 0
               e.student.supervisors.each do |sup| 
                 if sup.user.is_in?

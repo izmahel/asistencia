@@ -38,7 +38,7 @@
         if s.user.is_student
               hstart = s.start rescue 0
               hend = s.end rescue 0
-              hours = "#{hstart / 100}:00 - #{hend / 100}:00"
+              hours = "#{hstart / 100}:00 - #{hend / 100}:00" rescue '--'
         elsif s.h1 && s.h2 
     	  	hours = "Todo el día"
     	  elsif s.h1 && !s.h2 

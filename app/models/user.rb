@@ -6,7 +6,7 @@ class User < ApplicationRecord
   ACTIVE = 1
   INACTIVE = 2
 
-  MAX_PER_LAB = 1
+  MAX_PER_LAB = 2
 
   def fullname 
   	first_name + ' ' + last_name
@@ -21,7 +21,7 @@ class User < ApplicationRecord
   end
 
   def is_in?
-    sched = Schedule.where(user_id: self.id, work_date: Date.today, out: nil).where.not(in: nil).first
+    sched = Schedule.where(user_id: self.id, work_date: Date.today, out: nil).where.not(in: nil).first rescue false
     return sched 
   end
 

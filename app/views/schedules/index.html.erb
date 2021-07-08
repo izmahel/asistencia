@@ -65,7 +65,68 @@
         	<% if !@today_schedule.in.nil? %>
         	  <strong>Entrada: </strong> <%= l @today_schedule.in.to_datetime, format: "%H:%M" %>
         	  <strong> Salida: </strong> <%= l @today_schedule.out.to_datetime, format: "%H:%M" rescue '--' %>
-        	<%end %>
+            <% supervised_students = current_user.student_supervisor.order("is_advisor DESC") %>
+            <% if supervised_students.count > 0 %>
+               <%
+                 advisor_of = [] 
+                 supervised_students.each do |s| 
+                    if current_user.id == s.user.id
+                      advisor_of << s.student.id
+                    end
+                  end 
+                %>
+               <br><br>
+               <strong>Mis estudiantes supervisados:</strong><br>
+               <table class="table is-fullwidth">
+                  <tr>
+                    <th>Matrícula</th>
+                    <th>Nombre</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Supervisores</th>
+                  </tr>
+                  <% supervised_students.each do |s| %>
+                    <% s_today_schedule = s.student.today_schedule %>
+                    <tr>
+                      <td><%= s.student.identificator %></td>
+                      <td><%= s.student.first_name %> <%= s.student.last_name %>
+                        <% if s.student.is_in? %> 
+                            <span class="icon has-text-success"><i class="fas fa-check"></i></span> 
+                          <% else %> 
+                            <span class="icon has-text-danger"><i class="fas fa-times"></i></span> 
+                          <% end %>
+                      </td>
+                      <td>
+                        <%= l s_today_schedule.in.to_datetime, format: "%H:%M" rescue '--' %></td>
+                      </td>
+                      <td>
+                        <%= l s_today_schedule.out.to_datetime, format: "%H:%M" rescue '--' %></td>
+                      </td>
+                      <td>
+                        <% cur_sup = [] %>
+                        <% s.student.supervisors.each do |sup| %>
+                          <%= sup.user.first_name %> <%= sup.user.last_name %>
+                          <% if sup.user.is_in? %> 
+                            <span class="icon has-text-success"><i class="fas fa-check"></i></span> 
+                          <% else %> 
+                            <span class="icon has-text-danger"><i class="fas fa-times"></i></span> 
+                          <% end %>
+                          <% cur_sup << sup.user.id %> 
+                          <% if sup.is_advisor %>
+                            <span class="tag is-warning  is-light">Asesor</span>
+                          <% else %>
+                            <span class="tag is-primary  is-light">Adicional</span>     
+                          <% end %>
+
+                          <br>
+                        <% end %>
+                      </td>
+                    </tr>
+                    <% end %>
+
+                </table>
+            <% end %>
+        	<% end %>
         	<br><br>
         	<strong>Lista de verificación</strong>
 			<table class="table small-table">

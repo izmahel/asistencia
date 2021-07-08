@@ -25,4 +25,10 @@ class User < ApplicationRecord
     return sched 
   end
 
+  def today_schedule
+    sched = Schedule.where(user_id: self.id, work_date: Date.today).first rescue false
+    return sched 
+  end
+
+
 end

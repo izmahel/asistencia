@@ -3,6 +3,7 @@ class ReportsController < ApplicationController
   	@date_start = params[:date_start]
   	@date_end = params[:date_end]
   	@department_id = params[:department_id]
+    @rh_group = params[:rh_group]
   	@user_id = params[:user_id]
 
     if params[:show_students].to_i == 1
@@ -10,6 +11,7 @@ class ReportsController < ApplicationController
     else
       @show_students = false
     end
+
     
     if @date_start.blank?
       @date_start = Time.now.strftime("%Y-%m-%d")
@@ -29,12 +31,17 @@ class ReportsController < ApplicationController
   	  @schedules = @schedules.where('users.id': @user_id)
   	end
 
+    if !@rh_group.blank?
+      @schedules = @schedules.where('users.rh_group': @rh_group)
+    end
+
   end
 
   def xls
     @date_start = params[:date_start]
     @date_end = params[:date_end]
     @department_id = params[:department_id]
+    @rh_group = params[:rh_group]
     @user_id = params[:user_id]
 
     if params[:show_students].to_i == 1
@@ -61,20 +68,27 @@ class ReportsController < ApplicationController
       @schedules = @schedules.where('users.id': @user_id)
     end
 
+    if !@rh_group.blank?
+      @schedules = @schedules.where('users.rh_group': @rh_group)
+    end
+
     p = Axlsx::Package.new
     wb = p.workbook
 
     wb.add_worksheet(name: 'Asistencia') do |sheet|
-      sheet.add_row ['Nombre', 'Departamento', 'Fecha', 'Motivo', 'Autorizó', 'Entrada', 'Salida']
+      sheet.add_row ['ID', 'Nombre', 'Grupo', 'Nivel', 'Departamento', 'Fecha', 'Motivo', 'Autorizó', 'Entrada', 'Salida']
       @schedules.each do |s|
+        id = s.user.rh_id rescue '--'
         nombre = s.user.fullname rescue '--'
+        grupo = s.user.rh_group rescue '--'
+        nivel = s.user.rh_level rescue '--'
         departamento = s.user.department.name rescue '--'
         fecha = s.work_date rescue '--'
         motivo = s.notes rescue '--'
         autorizo = s.authorized_by.fullname rescue '--'
         entrada = s.in.strftime("%I:%M%p") rescue '--'
         salida = s.out.strftime("%I:%M%p") rescue '--'
-        sheet.add_row [nombre, departamento, fecha, motivo, autorizo, entrada, salida]
+        sheet.add_row [id, nombre, grupo, nivel, departamento, fecha, motivo, autorizo, entrada, salida]
       end 
     end
   

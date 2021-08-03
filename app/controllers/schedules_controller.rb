@@ -239,8 +239,11 @@ class SchedulesController < ApplicationController
     schedule.h1 = true
     schedule.h2 = true
     schedule.notes = params[:notes]
-    schedule.save!
-    render json: schedule
+    if schedule.save
+      render json: schedule
+    else
+      schedule.errors.each{|attr,err| puts "#{attr} - #{err.type}" } 
+    end
   end
 
 end

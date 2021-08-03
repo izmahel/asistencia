@@ -4,6 +4,7 @@
   <tr>
     <th style="font-size: 80% !important;">Estudiantes</th>
   	<th style="font-size: 80% !important;">Departamento</th>
+    <th style="font-size: 80% !important;">Grupo</th>
   	<th style="font-size: 80% !important;">Persona</th>
   	<th style="font-size: 80% !important;">Inicio</th>
   	<th style="font-size: 80% !important;">Fin</th>
@@ -25,16 +26,29 @@
         <option value="1" <%= sel_show %>>Mostrar estudiantes</option>
       </select></div>
     </td>
+    
   	<td>
   		<div class="select"><select style="font-size: 80% !important;" name="department_id" onchange="this.form.submit()">
   		  <option value="">--</option>
   		<% Department.order(:name).each do |d| 
   		  selected = ""
   		  selected = "selected = 'selected'" if d.id.to_i == @department_id.to_i %>
+
           <option value="<%= d.id %>" <%= selected %>><%= d.name %></option>
         <% end %>
         </select></div>
   	</td>
+    <td>
+      <div class="select"><select style="font-size: 80% !important;" name="rh_group" onchange="this.form.submit()">
+        <option value="">--</option>
+      <% User.select(:rh_group).distinct.each do |g| 
+        next if g.rh_group == ''
+        selected = ""
+        selected = "selected = 'selected'" if g.rh_group == @rh_group %>
+          <option value="<%= g.rh_group %>" <%= selected %>><%= g.rh_group %></option>
+        <% end %>
+        </select></div>
+    </td>
   	<td>
       <div class="select"><select style="font-size: 80% !important;" name="user_id" onchange="this.form.submit()">
       	<option value="">--</option>
@@ -62,7 +76,11 @@
   <tr>
   	<th></th>
   	<th></th>
-  	<th>Nombre</th>
+  	<th>#</th>
+    <th>Nombre</th>
+    <th>Tipo</th>
+    <th>Nivel</th>
+    <th>Departamento</th>
   	<th>Fecha</th>
   	<th>Motivo</th>
   	<th>Autorizó</th>
@@ -92,7 +110,11 @@
         <% else %>
         <span class="tag is-primary  is-light">Empleado</span>
         <% end %></td>
-      <td><%= s.user.fullname %><br><span class="tag is-light"><%= s.user.department.name rescue '--' %></span></td>
+      <td><%= s.user.rh_id %></td>
+      <td><%= s.user.fullname %></td>
+      <td><%= s.user.rh_group %></td>
+      <td><%= s.user.rh_level %></td>
+      <td><%= s.user.department.name %></td>
       <td>
         	
       	<% if s.h1 && s.h2 

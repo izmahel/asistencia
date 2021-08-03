@@ -92,7 +92,7 @@
         <% else %>
         <span class="tag is-primary  is-light">Empleado</span>
         <% end %></td>
-      <td><%= s.user.fullname %><br><span class="tag is-light"><%= s.user.department.name %></span></td>
+      <td><%= s.user.fullname %><br><span class="tag is-light"><%= s.user.department.name rescue '--' %></span></td>
       <td>
         	
       	<% if s.h1 && s.h2 

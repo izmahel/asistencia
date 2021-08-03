@@ -20,7 +20,7 @@ class SchedulesController < ApplicationController
           @today_schedule.appointment_id = row[5] 
           @today_schedule.notes  = row[6]
           @today_schedule.laboratory_id  = row[7]
-          @today_schedule.save
+          @today_schedule.save!
         end
       end
     end 
@@ -46,7 +46,7 @@ class SchedulesController < ApplicationController
     schedule.edit_by = current_user.id
     schedule.edit_notes =  params[:edit_notes]
     schedule.edit_date = Time.now
-    if schedule.save
+    if schedule.save!
       redirect_to '/reporte'
     end
   end
@@ -82,7 +82,7 @@ class SchedulesController < ApplicationController
   	  schedule.notes = ''
   	end
 
-  	if schedule.save
+  	if schedule.save!
   	  render json: schedule
   	end
   end
@@ -99,7 +99,7 @@ class SchedulesController < ApplicationController
     schedule.user_notes = params[:user_notes]
     schedule.passed = passed
 
-    if schedule.save
+    if schedule.save!
   	  redirect_to '/'
   	end
   end
@@ -158,7 +158,7 @@ class SchedulesController < ApplicationController
   	schedule = Schedule.find(params[:id])
   	schedule.temperature = params[:temperature]
   	schedule.in = Time.now
-  	if schedule.save
+  	if schedule.save!
   	  redirect_to '/registro/entradas'
   	end
   end
@@ -172,7 +172,7 @@ class SchedulesController < ApplicationController
   	schedule = Schedule.find(params[:id])
     schedule.out_notes = params[:out_notes]
   	schedule.out = Time.now
-  	if schedule.save
+  	if schedule.save!
       if schedule.user.is_student
         time = "#{DateTime.now.hour}#{DateTime.now.minute.to_s.rjust(2, '0')}".to_i
         if time > schedule.end.to_i
@@ -239,7 +239,7 @@ class SchedulesController < ApplicationController
     schedule.h1 = true
     schedule.h2 = true
     schedule.notes = params[:notes]
-    schedule.save
+    schedule.save!
     render json: schedule
   end
 

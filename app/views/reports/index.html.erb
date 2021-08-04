@@ -55,12 +55,12 @@
       	<% if !@department_id.blank? 
       	      users = User.where(status: User::ACTIVE, department_id: @department_id).order(:first_name, :last_name).each
            else 
-           	  users = User.where(status: User::ACTIVE).order(:first_name, :last_name).each
+           	  users = User.where(status: User::ACTIVE).order(:last_name, :first_name).each
            end
   		   users.each do |emp| 
   		   	 selected = ""
              selected = "selected = 'selected'" if emp.id.to_i == @user_id.to_i %>
-             <option value="<%= emp.id %>" <%= selected %>><%= emp.first_name %> <%= emp.last_name %></option>
+             <option value="<%= emp.id %>" <%= selected %>><%= emp.last_name %> <%= emp.first_name %></option>
           <% end %>
         </select></div>
   	</td>

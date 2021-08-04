@@ -53,10 +53,21 @@
       <div class="select"><select style="font-size: 80% !important;" name="user_id" onchange="this.form.submit()">
       	<option value="">--</option>
       	<% if !@department_id.blank? 
-      	      users = User.where(status: User::ACTIVE, department_id: @department_id).order(:first_name, :last_name).each
+      	      users = User.where(status: User::ACTIVE, department_id: @department_id).order(:first_name, :last_name)
            else 
-           	  users = User.where(status: User::ACTIVE).order(:last_name, :first_name).each
+           	  users = User.where(status: User::ACTIVE).order(:last_name, :first_name)
            end
+           if params[:show_type] == 'E' 
+              users = users.where('is_student': false).where("rh_level <> 'CAT'")
+            end
+
+            if params[:show_type] == 'C' 
+              users = users.where('rh_level': 'CAT')
+            end
+
+            if params[:show_type] == 'A' 
+              users = users.where('is_student': true)
+            end
   		   users.each do |emp| 
   		   	 selected = ""
              selected = "selected = 'selected'" if emp.id.to_i == @user_id.to_i %>

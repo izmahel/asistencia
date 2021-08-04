@@ -6,6 +6,9 @@ class ReportsController < ApplicationController
     @rh_group = params[:rh_group]
   	@user_id = params[:user_id]
 
+    if params[:show_type].blank? == 'E' 
+      params[:show_type] = 'E'
+    end
 
     @show_students = false
 

@@ -2,7 +2,7 @@
 <form action="/reporte" method="post" id="reportform" name="reportform">
 <table class="table is-fullwidth" style="font-size: 80% !important;">
   <tr>
-    <th style="font-size: 80% !important;">Estudiantes</th>
+    <th style="font-size: 80% !important;">Tipo</th>
   	<th style="font-size: 80% !important;">Departamento</th>
     <th style="font-size: 80% !important;">Grupo</th>
   	<th style="font-size: 80% !important;">Persona</th>
@@ -12,18 +12,18 @@
   <tr>
     <td>
       <div class="select">
-      <select style="font-size: 80% !important;" name="show_students" onchange="this.form.submit()">
-        <% 
-        if @show_students 
-          sel_no_show = ""
-          sel_show = 'selected="selected"'
-        else 
-          sel_show = ""
-          sel_no_show = 'selected="selected"'
-        end
+      <select style="font-size: 80% !important;" name="show_type" onchange="this.form.submit()">
+        <%
+        sel_E = ''
+        sel_C = ''
+        sel_A = ''
+        sel_E = 'selected = "selected"' if params[:show_type] == 'E'
+        sel_C = 'selected = "selected"' if params[:show_type] == 'C'
+        sel_A = 'selected = "selected"' if params[:show_type] == 'A'
         %>
-        <option value="0" <%= sel_no_show %>>No mostrar estudiantes</option>
-        <option value="1" <%= sel_show %>>Mostrar estudiantes</option>
+        <option value="E" <%= sel_E %>>Empleados</option>
+        <option value="C" <%= sel_C %>>Catedras</option>
+        <option value="A" <%= sel_A %>>Estudiantes</option>
       </select></div>
     </td>
     

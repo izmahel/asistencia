@@ -6,10 +6,12 @@ class ReportsController < ApplicationController
     @rh_group = params[:rh_group]
   	@user_id = params[:user_id]
 
-    if params[:show_students].to_i == 1
+
+    @show_students = false
+
+
+    if params[:show_type] == 'A' 
       @show_students = true
-    else
-      @show_students = false
     end
 
     
@@ -30,6 +32,18 @@ class ReportsController < ApplicationController
   	if !@user_id.blank?
   	  @schedules = @schedules.where('users.id': @user_id)
   	end
+
+    if params[:show_type] == 'E' 
+      @schedules = @schedules.where('users.is_student': false).where("users.rh_level <> 'CAT'")
+    end
+
+    if params[:show_type] == 'C' 
+      @schedules = @schedules.where('users.rh_level': 'CAT')
+    end
+
+    if params[:show_type] == 'A' 
+      @schedules = @schedules.where('users.is_student': true)
+    end
 
     if !@rh_group.blank?
       @schedules = @schedules.where('users.rh_group': @rh_group)

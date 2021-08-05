@@ -246,4 +246,16 @@ class SchedulesController < ApplicationController
     end
   end
 
+  def hours
+    hours = 0
+    if user = User.find_by_email(params[:email])
+      schedule = user.schedules.find_by_work_date(Time.now.strftime("%Y-%m-%d"))
+      if schedule 
+        hours = ((Time.now - schedule.in) / 1.hours).floor
+      end
+    end
+
+    render inline: hours
+  end
+
 end

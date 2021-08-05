@@ -47,6 +47,9 @@ Rails.application.routes.draw do
   # get '/entrada/editar/:id' => 'schedules#edit'
   post '/cita/actualizar' => 'schedules#save_edit'
 
+
+  post '/horas' => 'schedules#hours'
+
   
   root :to => 'schedules#index'
 end

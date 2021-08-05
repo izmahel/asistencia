@@ -251,7 +251,11 @@ class SchedulesController < ApplicationController
     if user = User.find_by_email(params[:email])
       schedule = user.schedules.find_by_work_date(Time.now.strftime("%Y-%m-%d"))
       if schedule 
-        hours = ((Time.now - schedule.in) / 1.hours).floor
+        if schedule.out 
+          hours = -1
+        else
+          hours = ((Time.now - schedule.in) / 1.hours).floor
+        end
       end
     end
 

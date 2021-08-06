@@ -141,8 +141,16 @@
       <td><%= s.notes %></td>
       <td><%= s.authorized_by.first_name %> <%= s.authorized_by.last_name %><br><span class="tag is-light"><%= s.authorized_by.department.name rescue 'Sin departamento' %></span></td>
       <td class="td-center"><%= s.temperature %></td>
-      <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
-      <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
+      <% if s.user.location.name != 'Chihuahua'
+          plus_in = s.in + 1.hours rescue '--'
+          plus_out = s.out + 1.hours rescue '--'
+      %>
+          <td class="td-center"><%= l plus_in.to_datetime, format: "%H:%M" rescue '--' %></td>
+          <td class="td-center"><%= l plus_out.to_datetime, format: "%H:%M" rescue '--' %></td>
+      <% else %>
+          <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
+          <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
+      <% end %>
       <td><%= s.out_notes %></td>
       <td>
         <% if is_admin? %>

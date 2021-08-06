@@ -102,9 +102,18 @@ class ReportsController < ApplicationController
         departamento = s.user.department.name rescue '--'
         fecha = s.work_date rescue '--'
         motivo = s.notes rescue '--'
+
         autorizo = s.authorized_by.fullname rescue '--'
-        entrada = s.in.strftime("%I:%M%p") rescue '--'
-        salida = s.out.strftime("%I:%M%p") rescue '--'
+        if s.user.location.name != 'Chihuahua'
+          plus_in = s.in + 1.hours rescue '--'
+          plus_out = s.out + 1.hours rescue '--'
+          entrada = plus_in.strftime("%H:%M") rescue '--'
+          salida = plus_out.strftime("%H:%M") rescue '--' 
+        else 
+          entrada = s.in.strftime("%H:%M") rescue '--'
+          salida = s.out.strftime("%H:%M") rescue '--' 
+        end
+        
         sheet.add_row [id, nombre, grupo, nivel, departamento, fecha, motivo, autorizo, entrada, salida]
       end 
     end

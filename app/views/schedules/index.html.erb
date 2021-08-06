@@ -63,8 +63,17 @@
             </ul>
           <% end %>
         	<% if !@today_schedule.in.nil? %>
-        	  <strong>Entrada: </strong> <%= l @today_schedule.in.to_datetime, format: "%H:%M" %>
-        	  <strong> Salida: </strong> <%= l @today_schedule.out.to_datetime, format: "%H:%M" rescue '--' %>
+            <% if current_user.location.name != 'Chihuahua'
+                plus_in = @today_schedule.in + 1.hours rescue '--'
+                plus_out = @today_schedule.out + 1.hours rescue '--'
+            %>
+              <strong>Entrada: </strong> <%= l plus_in.to_datetime, format: "%H:%M" %>
+              <strong> Salida: </strong> <%= l plus_out.to_datetime, format: "%H:%M" rescue '--' %>
+            <% else %>
+              <strong>Entrada: </strong> <%= l @today_schedule.in.to_datetime, format: "%H:%M" %>
+              <strong> Salida: </strong> <%= l @today_schedule.out.to_datetime, format: "%H:%M" rescue '--' %>
+            <% end %>
+        	  
             <% supervised_students = current_user.student_supervisor.order("is_advisor DESC") %>
             <% if supervised_students.count > 0 %>
                <%

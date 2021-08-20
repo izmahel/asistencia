@@ -57,6 +57,10 @@
            else 
            	  users = User.where(status: User::ACTIVE).order(:last_name, :first_name)
            end
+           if !@rh_group.blank?
+              users = users.where(rh_group: @rh_group)
+           end
+
            if params[:show_type] == 'E' 
               users = users.where('is_student': false).where("rh_level <> 'CAT'")
             end

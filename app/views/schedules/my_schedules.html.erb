@@ -10,6 +10,7 @@
   	<th class="td-center"><span title="Temperatura">Temp.</span></th>
   	<th class="td-center">Entrada</th>
   	<th class="td-center">Salida</th>
+        <th class="td-center">Horas en CIMAV</th>
   </tr>
   
   <% @schedules.each do |s| %>
@@ -42,6 +43,7 @@
       <td class="td-center"><%=  s.temperature %></td>
       <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
       <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
+      <td class="td-center"><%= ((s.out - s.in) / 1.hours).round(2) rescue '--' %></td>
     </tr>
   <% end %>
 

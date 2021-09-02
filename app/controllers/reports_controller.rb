@@ -93,7 +93,7 @@ class ReportsController < ApplicationController
     wb = p.workbook
 
     wb.add_worksheet(name: 'Asistencia') do |sheet|
-      sheet.add_row ['ID', 'Nombre', 'Grupo', 'Nivel', 'Departamento', 'Fecha', 'Motivo', 'Autorizó', 'Entrada', 'Salida']
+      sheet.add_row ['ID', 'Nombre', 'Grupo', 'Nivel', 'Departamento', 'Fecha', 'Motivo', 'Autorizó', 'Entrada', 'Salida', 'Horas']
       @schedules.each do |s|
         id = s.user.rh_id rescue '--'
         nombre = s.user.fullname rescue '--'
@@ -113,8 +113,11 @@ class ReportsController < ApplicationController
           entrada = s.in.strftime("%H:%M") rescue '--'
           salida = s.out.strftime("%H:%M") rescue '--' 
         end
+
+        horas = ((s.out - s.in) / 1.hours).round(2) rescue '--'
+
         
-        sheet.add_row [id, nombre, grupo, nivel, departamento, fecha, motivo, autorizo, entrada, salida]
+        sheet.add_row [id, nombre, grupo, nivel, departamento, fecha, motivo, autorizo, entrada, salida, horas]
       end 
     end
   

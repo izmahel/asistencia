@@ -102,6 +102,7 @@
   	<th class="td-center"><span title="Temperatura">Temp.</span></th>
   	<th class="td-center">Entrada</th>
   	<th class="td-center">Salida</th>
+    <th class="td-center">Horas</th>
   	<th class="td-center">Notas Salida</th>
     <th></th>
   </tr>
@@ -155,6 +156,7 @@
           <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
           <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
       <% end %>
+      <td class="td-center"><%= ((s.out - s.in) / 1.hours).round(2) rescue '--' %></td>
       <td><%= s.out_notes %></td>
       <td>
         <% if is_admin? %>

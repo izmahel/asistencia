@@ -43,7 +43,26 @@
       <td class="td-center"><%=  s.temperature %></td>
       <td class="td-center"><%= l s.in.to_datetime, format: "%H:%M" rescue '--' %></td>
       <td class="td-center"><%= l s.out.to_datetime, format: "%H:%M" rescue '--' %></td>
-      <td class="td-center"><%= ((s.out - s.in) / 1.hours).round(2) rescue '--' %></td>
+      <td class="td-center">
+        <% if !s.out.blank? %>
+          <%= ((s.out - s.in) / 1.hours).round(2) rescue '--' %>
+        <% else %>
+          <% if !s.in.blank? %>
+          <div id="cuanto"></div>
+          <script>
+            function actualiza_contador() {
+              var ahora = new Date();
+              var entrada = new Date('<%= s.in %>');
+              var cuanto = Math.abs(ahora - entrada) / 36e5
+              var cuanto_round = Math.round((cuanto + Number.EPSILON) * 100) / 100;
+              var cuanto_div = document.getElementById('cuanto');
+              cuanto_div.innerHTML  = cuanto_round;
+            }
+            setInterval(actualiza_contador, 1000);
+          </script>
+          <% end %>
+        <% end %>  
+      </td>
     </tr>
   <% end %>
 

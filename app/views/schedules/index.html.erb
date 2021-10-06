@@ -137,7 +137,7 @@
             <% end %>
         	<% end %>
         	<br><br>
-        	<strong>Lista de verificación</strong>
+        	<strong id="check-all">Lista de verificación</strong>
 			<table class="table small-table">
 			  <tr><th></th><th>SÍ</th><th>NO</th></tr>
 			  <% c = 0
@@ -166,7 +166,7 @@
 			     <tr>
 			     	<td><%= q %></td>
 			     	<td><input type="radio" name="q<%= c %>" value="true" <%= q_true %> <%= q_disabled %>></td>
-			     	<td><input type="radio" name="q<%= c %>" value="false" <%= q_false %> <%= q_disabled %>></td>
+			     	<td><input type="radio" id="radio-q<%= c %>" name="q<%= c %>" value="false" <%= q_false %> <%= q_disabled %>></td>
 			     </tr>
 			  <% end %>
 			  <tr>

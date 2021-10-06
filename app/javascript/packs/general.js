@@ -1,3 +1,20 @@
+$(document).on('click', '#check-all', function() {
+  $("#radio-q1").prop("checked", true);
+  $("#radio-q2").prop("checked", true);
+  $("#radio-q3").prop("checked", true);
+  $("#radio-q4").prop("checked", true);
+  $("#radio-q5").prop("checked", true);
+  $("#radio-q6").prop("checked", true);
+  $("#radio-q7").prop("checked", true);
+  $("#radio-q8").prop("checked", true);
+  $("#radio-q9").prop("checked", true);
+  $("#radio-q10").prop("checked", true);
+  $("#radio-q11").prop("checked", true);
+  $("#radio-q12").prop("checked", true);
+  $("#radio-q13").prop("checked", true);
+  $("#radio-q14").prop("checked", true);
+});
+
 $(document).on('click', '.burger', function() {
   $(".burger").toggleClass("is-active")
   $(".navbar-menu").toggleClass("is-active")

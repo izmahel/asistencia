@@ -111,8 +111,10 @@ class SchedulesController < ApplicationController
   end
 
   def register_do_login
-    if params[:password].to_s == 'caseta2020'
+    if params[:password].to_s == 'caseta2020' || params[:password].to_s == 'casetamty22' || params[:password].to_s == 'casetadgo22'
       session[:register_session] = "iniciada"
+      session[:campus] = "dgo" if params[:password].to_s == 'casetadgo22'
+      session[:campus] = "mty" if params[:password].to_s == 'casetamty22'
       redirect_to '/registro'
     else 
       redirect_to '/registro/login?fail=true'
@@ -134,17 +136,20 @@ class SchedulesController < ApplicationController
   	  @tomorrow = Time.now.tomorrow.strftime("%Y-%m-%d")
   	  @yesterday = Time.now.yesterday.strftime("%Y-%m-%d")
   	end
-  	@schedules = Schedule.where(work_date: @date)
+    @schedules = Schedule.where(work_date: @date)
+    @schedules = dgo_mty(@schedules, session[:campus]) if session[:campus]
     render layout: 'register'
   end
 
   def register_in
     @schedules = Schedule.joins(:user).where(in: nil, work_date: Date.today, passed: true).order(:first_name, :last_name)
+    @schedules = dgo_mty(@schedules, session[:campus]) if session[:campus]
   	render layout: 'register'
   end
 
   def register_out
   	@schedules = Schedule.where(out: nil, passed: true).where.not(in: nil)
+    @schedules = dgo_mty(@schedules, session[:campus]) if session[:campus]
     render layout: 'register'
   end
 
@@ -262,4 +267,15 @@ class SchedulesController < ApplicationController
     render inline: hours
   end
 
+  protected
+
+  def dgo_mty(schedules, campus)
+    f = []
+    campus == "dgo"? c = 6 : c = 4 
+    schedules.each do |s|
+      f << s if s.user.location_id == c
+    end
+    return f
+  end
+  
 end
